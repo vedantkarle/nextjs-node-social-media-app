@@ -150,6 +150,7 @@ const Signup = () => {
 					/>
 					<Divider hidden />
 					<Button
+						icon='signup'
 						color='orange'
 						type='submit'
 						content='Signup'
@@ -157,7 +158,6 @@ const Signup = () => {
 					/>
 				</Segment>
 			</Form>
-
 			<FooterMessage />
 		</>
 	);
