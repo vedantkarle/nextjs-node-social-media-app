@@ -30,8 +30,17 @@ router.get("/:username", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-	const { name, email, password, bio, facebook, youtube, twitter, instagram } =
-		req.body.user;
+	const {
+		name,
+		username,
+		email,
+		password,
+		bio,
+		facebook,
+		youtube,
+		twitter,
+		instagram,
+	} = req.body.user;
 
 	if (!isEmail(email)) return res.status(401).send(`Invalid Email`);
 

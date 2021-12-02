@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Button, Divider, Form, Message, Segment } from "semantic-ui-react";
 import CommonInputs from "../components/Common/CommonInputs";
@@ -6,12 +7,17 @@ import {
 	FooterMessage,
 	HeaderMessage,
 } from "../components/Common/WelcomeMessage";
+import { registerUser } from "../utils/authUser";
+import baseUrl from "../utils/baseUrl";
+import upload from "../utils/uploadPicToCloudinary";
+let cancel;
 
 export const regexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
 
 const Signup = () => {
 	const [user, setUser] = useState({
 		name: "",
+		username: "",
 		email: "",
 		password: "",
 		bio: "",
@@ -38,7 +44,21 @@ const Signup = () => {
 	const [highlighted, setHighlighted] = useState(false);
 	const inputRef = useRef();
 
-	const handleSubmit = e => {};
+	const handleSubmit = async e => {
+		e.preventDefault();
+		setFormLoading(true);
+		let profilePicUrl;
+		if (media !== null) {
+			profilePicUrl = await upload(media);
+		}
+		if (media !== null && !profilePicUrl) {
+			setFormLoading(false);
+			return setError("Error uploading image");
+		}
+
+		await registerUser(user, profilePicUrl, setError);
+		setFormLoading(false);
+	};
 
 	const handleChange = e => {
 		const { name, value, files } = e.target;
@@ -51,6 +71,27 @@ const Signup = () => {
 		setUser(prev => ({ ...prev, [name]: value }));
 	};
 
+	const checkUsername = async () => {
+		setUsernameLoading(true);
+		try {
+			cancel && cancel();
+
+			const CancelToken = axios.CancelToken;
+
+			const { data } = await axios.get(`${baseUrl}/api/signup/${username}`, {
+				cancelToken: new CancelToken(canceler => (cancel = canceler)),
+			});
+
+			if (data === "OK") {
+				setUsernameAvailable(true);
+				setUser(prev => ({ ...prev, username }));
+			}
+		} catch (error) {
+			setError("Username not available");
+		}
+		setUsernameLoading(false);
+	};
+
 	useEffect(() => {
 		const isUser = Object.values({ name, email, password, bio }).every(item =>
 			Boolean(item),
@@ -58,6 +99,10 @@ const Signup = () => {
 
 		isUser ? setSubmitDisabled(false) : setSubmitDisabled(true);
 	}, [user]);
+
+	useEffect(() => {
+		username === "" ? setUsernameAvailable(false) : checkUsername();
+	}, [username]);
 
 	return (
 		<>
