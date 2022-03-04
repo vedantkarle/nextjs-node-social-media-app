@@ -4,6 +4,25 @@ const User = require("../models/UserModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const isEmail = require("validator/lib/isEmail");
+const authMiddleware = require("../middlewares/authMiddleware");
+const Follower = require("../models/FollowerModel");
+
+router.get("/", authMiddleware, async (req, res) => {
+	const { userId } = req;
+
+	try {
+		const user = await User.findById(userId);
+
+		console.log(user);
+
+		const userFollowStats = await Follower.findOne({ user: userId });
+
+		return res.status(200).json({ user, userFollowStats });
+	} catch (error) {
+		console.error(error);
+		res.status(401).send("Unauthorized");
+	}
+});
 
 router.post("/", async (req, res) => {
 	const { email, password } = req.body.user;
@@ -33,7 +52,7 @@ router.post("/", async (req, res) => {
 			(err, token) => {
 				if (err) throw err;
 
-				res.status(200).json(token);
+				return res.status(200).json(token);
 			},
 		);
 	} catch (error) {

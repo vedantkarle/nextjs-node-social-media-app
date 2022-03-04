@@ -1,5 +1,5 @@
 import axios from "axios";
-import cookie from "js-cookie";
+import Cookies from "js-cookie";
 import Router from "next/router";
 import baseUrl from "./baseUrl";
 import catchErrors from "./catchErrors";
@@ -26,9 +26,19 @@ export const loginUser = async (user, setError, setLoading) => {
 	} catch (error) {
 		setError(catchErrors(error));
 	}
+	setLoading(false);
+};
+
+export const redirectUser = (ctx, location) => {
+	if (ctx.req) {
+		ctx.res.writeHead(302, { Location: location });
+		ctx.res.end();
+	} else {
+		Router.push(location);
+	}
 };
 
 const setToken = token => {
-	cookie.set("token", token);
+	Cookies.set("token", token);
 	Router.push("/");
 };

@@ -1,7 +1,6 @@
 import Router from "next/router";
 import nprogress from "nprogress";
 import React from "react";
-import { Container } from "semantic-ui-react";
 import HeadTags from "./HeadTags";
 import Navbar from "./Navbar";
 
@@ -16,9 +15,7 @@ function Layout({ children }) {
 
 			<Navbar />
 
-			<Container style={{ paddingTop: "1rem" }} text>
-				{children}
-			</Container>
+			<div>{children}</div>
 		</>
 	);
 }

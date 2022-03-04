@@ -10,6 +10,7 @@ import {
 import { registerUser } from "../utils/authUser";
 import baseUrl from "../utils/baseUrl";
 import upload from "../utils/uploadPicToCloudinary";
+
 let cancel;
 
 export const regexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;

@@ -1,7 +1,5 @@
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
-import { Container, Icon, Menu } from "semantic-ui-react";
 
 function Navbar() {
 	const router = useRouter();
@@ -9,22 +7,23 @@ function Navbar() {
 	const isActive = route => router.pathname === route;
 
 	return (
-		<Menu fluid borderless>
-			<Container text>
-				<Link href='/login'>
-					<Menu.Item header active={isActive("/login")}>
-						<Icon size='large' name='sign in' />
-						Login
-					</Menu.Item>
-				</Link>
-				<Link href='/signup'>
-					<Menu.Item header active={isActive("/signup")}>
-						<Icon size='large' name='signup' />
-						Signup
-					</Menu.Item>
-				</Link>
-			</Container>
-		</Menu>
+		<nav>
+			<div className='container'>
+				<h2 className='logo'>Social Book</h2>
+				<div className='search-bar'>
+					<i className='uil uil-search'></i>
+					<input type='search' placeholder='Search...' />
+				</div>
+				<div className='create'>
+					<label className='btn btn-primary' htmlFor='create-post'>
+						Create
+					</label>
+					<div className='profile-photo'>
+						<img src='/profile.jfif' />
+					</div>
+				</div>
+			</div>
+		</nav>
 	);
 }
 

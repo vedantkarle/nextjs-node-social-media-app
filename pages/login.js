@@ -1,24 +1,24 @@
-import { useEffect, useState } from "react";
+import cookie from "js-cookie";
+import React, { useEffect, useState } from "react";
+// import "semantic-ui-css/semantic.min.css";
 import { Button, Divider, Form, Message, Segment } from "semantic-ui-react";
 import {
 	FooterMessage,
 	HeaderMessage,
 } from "../components/Common/WelcomeMessage";
+import { loginUser } from "../utils/authUser";
 
-const Login = () => {
+function Login() {
 	const [user, setUser] = useState({
 		email: "",
 		password: "",
 	});
 
 	const { email, password } = user;
-
 	const [showPassword, setShowPassword] = useState(false);
-	const [error, setError] = useState(null);
+	const [errorMsg, setErrorMsg] = useState(null);
 	const [formLoading, setFormLoading] = useState(false);
-	const [submitDisabled, setSubmitDisabled] = useState(false);
-
-	const handleSubmit = e => {};
+	const [submitDisabled, setSubmitDisabled] = useState(true);
 
 	const handleChange = e => {
 		const { name, value } = e.target;
@@ -30,26 +30,38 @@ const Login = () => {
 		const isUser = Object.values({ email, password }).every(item =>
 			Boolean(item),
 		);
-
 		isUser ? setSubmitDisabled(false) : setSubmitDisabled(true);
 	}, [user]);
+
+	const handleSubmit = async e => {
+		e.preventDefault();
+
+		await loginUser(user, setErrorMsg, setFormLoading);
+	};
+
+	useEffect(() => {
+		document.title = "Welcome Back";
+		const userEmail = cookie.get("userEmail");
+		if (userEmail) setUser(prev => ({ ...prev, email: userEmail }));
+	}, []);
 
 	return (
 		<>
 			<HeaderMessage />
-
 			<Form
 				loading={formLoading}
-				error={error !== null}
+				error={errorMsg !== null}
 				onSubmit={handleSubmit}>
 				<Message
 					error
 					header='Oops!'
-					content={error}
-					onDismiss={() => setError(null)}
+					content={errorMsg}
+					onDismiss={() => setErrorMsg(null)}
 				/>
+
 				<Segment>
 					<Form.Input
+						required
 						label='Email'
 						placeholder='Email'
 						name='email'
@@ -59,8 +71,8 @@ const Login = () => {
 						icon='envelope'
 						iconPosition='left'
 						type='email'
-						required
 					/>
+
 					<Form.Input
 						label='Password'
 						placeholder='Password'
@@ -75,15 +87,16 @@ const Login = () => {
 							onClick: () => setShowPassword(!showPassword),
 						}}
 						iconPosition='left'
-						required
 						type={showPassword ? "text" : "password"}
+						required
 					/>
+
 					<Divider hidden />
 					<Button
 						icon='signup'
-						color='orange'
-						type='submit'
 						content='Login'
+						type='submit'
+						color='orange'
 						disabled={submitDisabled}
 					/>
 				</Segment>
@@ -92,6 +105,6 @@ const Login = () => {
 			<FooterMessage />
 		</>
 	);
-};
+}
 
 export default Login;
