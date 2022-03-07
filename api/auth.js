@@ -13,8 +13,6 @@ router.get("/", authMiddleware, async (req, res) => {
 	try {
 		const user = await User.findById(userId);
 
-		console.log(user);
-
 		const userFollowStats = await Follower.findOne({ user: userId });
 
 		return res.status(200).json({ user, userFollowStats });

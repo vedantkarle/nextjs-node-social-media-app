@@ -49,7 +49,7 @@ const Feed = () => {
 			</div>
 			<div className='caption'>
 				<p>
-					<b>Vedant Karle</b>This is a very very excellent photo
+					<b>Vedant Karle</b> : This is a very very excellent photo
 				</p>
 			</div>
 			<div className='text-muted'>View all 277 comments</div>

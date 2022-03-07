@@ -1,5 +1,6 @@
 import axios from "axios";
 import { destroyCookie, parseCookies } from "nookies";
+import { ToastContainer } from "react-toastify";
 import Layout from "../components/Layout/Layout";
 import { redirectUser } from "../utils/authUser";
 import baseUrl from "../utils/baseUrl";
@@ -7,6 +8,7 @@ import baseUrl from "../utils/baseUrl";
 function MyApp({ Component, pageProps }) {
 	return (
 		<Layout {...pageProps}>
+			<ToastContainer />
 			<Component {...pageProps} />
 		</Layout>
 	);
