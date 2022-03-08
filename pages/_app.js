@@ -1,6 +1,9 @@
 import axios from "axios";
 import { destroyCookie, parseCookies } from "nookies";
+import "react-confirm-alert/src/react-confirm-alert.css";
+import "react-responsive-modal/styles.css";
 import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Layout from "../components/Layout/Layout";
 import { redirectUser } from "../utils/authUser";
 import baseUrl from "../utils/baseUrl";

@@ -9,7 +9,7 @@ const uuid = require("uuid").v4;
 router.post("/", authMiddleware, async (req, res) => {
 	const { text, location, picUrl } = req.body;
 
-	if (text.trim().length < 1)
+	if (text.length < 1)
 		return res.status(400).send("Text must be at least 1 character");
 
 	try {
@@ -22,7 +22,9 @@ router.post("/", authMiddleware, async (req, res) => {
 
 		const post = await Post(newPost).save();
 
-		res.status(201).json(post);
+		const newPostCreated = await Post.findById(post._id).populate("user");
+
+		res.status(201).json(newPostCreated);
 	} catch (error) {
 		console.error(error);
 		return res.status(500).send(`Server Error`);
@@ -34,8 +36,7 @@ router.get("/", authMiddleware, async (req, res) => {
 		const posts = await Post.find({})
 			.sort({ createdAt: -1 })
 			.populate("user")
-			.populate("comments.user")
-			.populate("likes.user");
+			.populate("comments.user");
 
 		res.status(200).json(posts);
 	} catch (error) {
@@ -110,13 +111,29 @@ router.post("/like/:postId", authMiddleware, async (req, res) => {
 			);
 			post.likes = likes;
 			await post.save();
-			return;
+			return res.status(200).send("Post Unliked");
 		}
 
 		await post.likes.unshift({ user: req.userId });
 		await post.save();
 
 		res.status(200).send("Post liked");
+	} catch (error) {
+		console.error(error);
+		return res.status(500).send(`Server Error`);
+	}
+});
+
+router.get("/like/:postId", authMiddleware, async (req, res) => {
+	const { postId } = req.params;
+	try {
+		const post = await Post.findById(postId).populate("likes.user");
+
+		if (!post) {
+			return res.status(404).send("Post not found!");
+		}
+
+		res.status(200).json(post.likes);
 	} catch (error) {
 		console.error(error);
 		return res.status(500).send(`Server Error`);
@@ -145,7 +162,7 @@ router.post("/comment/:postId", authMiddleware, async (req, res) => {
 		await post.comments.unshift(newComment);
 		await post.save();
 
-		res.status(200).send("Comment added!");
+		res.status(200).send(newComment._id);
 	} catch (error) {
 		console.error(error);
 		return res.status(500).send(`Server Error`);
@@ -173,6 +190,7 @@ router.delete("/:postId/:commentId", authMiddleware, async (req, res) => {
 					.indexOf(commentId);
 
 				await post.comments.splice(indexOf, 1);
+				await post.save();
 
 				return res.status(200).send("Comment deleted successfully");
 			} else {
@@ -185,11 +203,12 @@ router.delete("/:postId/:commentId", authMiddleware, async (req, res) => {
 			.indexOf(commentId);
 
 		await post.comments.splice(indexOf, 1);
+		await post.save();
 
-		return res.status(200).send("Comment deleted successfully");
+		res.status(200).send("Comment deleted successfully");
 	} catch (error) {
 		console.error(error);
-		return res.status(500).send(`Server Error`);
+		res.status(500).send(`Server Error`);
 	}
 });
 

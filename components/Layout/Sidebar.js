@@ -1,17 +1,17 @@
 import Link from "next/link";
 import React from "react";
 
-const Sidebar = () => {
+const Sidebar = ({ user }) => {
 	return (
 		<div className='left'>
 			<Link href='/'>
 				<a className='profile'>
 					<div className='profile-photo'>
-						<img src='/profile.jfif' />
+						<img src={user?.profilePicUrl} />
 					</div>
 					<div className='handle'>
-						<h4>Vedant Karle</h4>
-						<p className='text-muted'>@vedant</p>
+						<h4>{user.name}</h4>
+						<p className='text-muted'>@{user.username}</p>
 					</div>
 				</a>
 			</Link>
