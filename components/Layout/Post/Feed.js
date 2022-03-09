@@ -4,19 +4,23 @@ import React, { useState } from "react";
 import { confirmAlert } from "react-confirm-alert";
 import { AiOutlineComment, AiOutlineShareAlt } from "react-icons/ai";
 import { BsFillHeartFill, BsHeart } from "react-icons/bs";
+import Modal from "react-responsive-modal";
 import {
 	deleteComment,
 	deletePost,
 	likePost,
 } from "../../../utils/postActions";
 import CommentInput from "./CommentInput";
+import ImageModal from "./ImageModal";
 import LikeList from "./LikeList";
+import NoImageModal from "./NoImageModal";
 
 const Feed = ({ post, setPosts, user, setShowToastr }) => {
 	const [likes, setLikes] = useState(post.likes);
 	const [comments, setComments] = useState(post.comments);
 	const [error, setError] = useState(null);
 	const [open, setOpen] = useState(false);
+	const [showModal, setShowModal] = useState(false);
 
 	const onOpenModal = () => setOpen(true);
 	const onCloseModal = () => setOpen(false);
@@ -67,11 +71,11 @@ const Feed = ({ post, setPosts, user, setShowToastr }) => {
 				)}
 			</div>
 			{post?.picUrl && (
-				<div className='photo'>
+				<div className='photo' onClick={() => setShowModal(true)}>
 					<img src={post?.picUrl} />
 				</div>
 			)}
-			<div className='text'>
+			<div className='text' onClick={() => setShowModal(true)}>
 				<p>{post?.text}</p>
 			</div>
 			<div className='action-buttons'>
@@ -144,7 +148,7 @@ const Feed = ({ post, setPosts, user, setShowToastr }) => {
 									</Link>
 									: {c.text}
 								</span>
-								{(user.role === "root" || post.user._id === user._id) && (
+								{(user.role === "root" || c.user._id === user._id) && (
 									<span className='delete' onClick={() => handleDelete(c._id)}>
 										<i className='uil uil-trash-alt'></i>
 									</span>
@@ -153,7 +157,9 @@ const Feed = ({ post, setPosts, user, setShowToastr }) => {
 						),
 				)}
 			{comments.length > 3 && (
-				<div className='text-muted'>View all {comments.length} comments</div>
+				<div className='text-muted' onClick={() => setShowModal(true)}>
+					View all {comments.length} comments
+				</div>
 			)}
 			<CommentInput
 				user={user}
@@ -162,6 +168,32 @@ const Feed = ({ post, setPosts, user, setShowToastr }) => {
 				setError={setError}
 			/>
 			<LikeList open={open} onCloseModal={onCloseModal} postId={post._id} />
+			<Modal
+				open={showModal}
+				onClose={() => {
+					setShowModal(false);
+				}}
+				center>
+				{post.picUrl ? (
+					<ImageModal
+						post={post}
+						user={user}
+						comments={comments}
+						setComments={setComments}
+						handleDelete={handleDelete}
+						setError={setError}
+					/>
+				) : (
+					<NoImageModal
+						post={post}
+						user={user}
+						comments={comments}
+						setComments={setComments}
+						handleDelete={handleDelete}
+						setError={setError}
+					/>
+				)}
+			</Modal>
 		</div>
 	);
 };

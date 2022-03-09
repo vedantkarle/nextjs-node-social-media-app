@@ -31,10 +31,10 @@ const CreatePostForm = ({ user, setPosts, setShowToastr }) => {
 
 		if (media !== null) {
 			picUrl = await upload(media);
-		}
-		if (!picUrl) {
-			setLoading(false);
-			return setError("Error uploading image");
+			if (!picUrl) {
+				setLoading(false);
+				return setError("Error uploading image");
+			}
 		}
 
 		await addPost(

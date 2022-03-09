@@ -6,7 +6,7 @@ import { Modal } from "react-responsive-modal";
 import baseUrl from "../../../utils/baseUrl";
 import catchErrors from "../../../utils/catchErrors";
 
-const LikeList = ({ postId, trigger, open, onCloseModal }) => {
+const LikeList = ({ postId, open, onCloseModal }) => {
 	const [likesList, setLikesList] = useState([]);
 	const [loading, setLoading] = useState(false);
 
@@ -24,8 +24,10 @@ const LikeList = ({ postId, trigger, open, onCloseModal }) => {
 	};
 
 	useEffect(() => {
-		getLikesList();
-	}, []);
+		if (open) {
+			getLikesList();
+		}
+	}, [open]);
 
 	return (
 		<Modal
@@ -45,14 +47,26 @@ const LikeList = ({ postId, trigger, open, onCloseModal }) => {
 								overflow: "auto",
 								maxHeight: "15rem",
 								height: "15rem",
-								minWidth: "210px",
+								minWidth: "300px",
 							}}>
-							{likesList?.map(like => (
-								<div key={like._id}>
-									<Link href={`/${like.user.username}`}>
-										<a>{like.user.username}</a>
-									</Link>
-								</div>
+							{likesList?.map((like, i) => (
+								<Link href={`/${like.user.username}`} key={i}>
+									<a
+										style={{
+											display: "flex",
+											marginBottom: "10px",
+											alignItems: "center",
+											width: "100%",
+										}}>
+										<div className='profile-photo'>
+											<img src={like?.user?.profilePicUrl} />
+										</div>
+										<div className='handle' style={{ marginLeft: "10px" }}>
+											<h4>{like.user.name}</h4>
+											<p className='text-muted'>@{like?.user.username}</p>
+										</div>
+									</a>
+								</Link>
 							))}
 						</div>
 					)}

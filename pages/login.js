@@ -52,12 +52,14 @@ function Login() {
 				loading={formLoading}
 				error={errorMsg !== null}
 				onSubmit={handleSubmit}>
-				<Message
-					error
-					header='Oops!'
-					content={errorMsg}
-					onDismiss={() => setErrorMsg(null)}
-				/>
+				{errorMsg !== null && (
+					<Message
+						error
+						header='Oops!'
+						content={errorMsg}
+						onDismiss={() => setErrorMsg(null)}
+					/>
+				)}
 
 				<Segment>
 					<Form.Input
