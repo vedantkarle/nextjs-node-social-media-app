@@ -32,11 +32,29 @@ router.post("/", authMiddleware, async (req, res) => {
 });
 
 router.get("/", authMiddleware, async (req, res) => {
+	const { pageNumber } = req.query;
+
+	const number = Number(pageNumber);
+	const size = 8;
+
 	try {
-		const posts = await Post.find({})
-			.sort({ createdAt: -1 })
-			.populate("user")
-			.populate("comments.user");
+		let posts;
+
+		if (number === 1) {
+			posts = await Post.find({})
+				.limit(size)
+				.sort({ createdAt: -1 })
+				.populate("user")
+				.populate("comments.user");
+		} else {
+			const skip = size * (number - 1);
+			posts = await Post.find({})
+				.skip(skip)
+				.limit(size)
+				.sort({ createdAt: -1 })
+				.populate("user")
+				.populate("comments.user");
+		}
 
 		res.status(200).json(posts);
 	} catch (error) {

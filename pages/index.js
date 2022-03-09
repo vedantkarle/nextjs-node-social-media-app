@@ -22,20 +22,20 @@ const Index = ({ user, postsData, errorLoading }) => {
 		}
 	}, [showToastr]);
 
-	if (posts.length === 0 || errorLoading) {
-		return <h5>No Posts</h5>;
-	}
-
 	return (
 		<main>
 			<div className='container'>
 				<Sidebar user={user} />
-				<Posts
-					user={user}
-					posts={posts}
-					setPosts={setPosts}
-					setShowToastr={setShowToastr}
-				/>
+				{posts.length === 0 || errorLoading ? (
+					<div>No Posts</div>
+				) : (
+					<Posts
+						user={user}
+						posts={posts}
+						setPosts={setPosts}
+						setShowToastr={setShowToastr}
+					/>
+				)}
 				<SearchBar />
 			</div>
 		</main>
@@ -48,6 +48,7 @@ Index.getInitialProps = async ctx => {
 
 		const res = await axios.get(`${baseUrl}/api/posts`, {
 			headers: { Authorization: token },
+			params: { pageNumber: 1 },
 		});
 
 		return {
