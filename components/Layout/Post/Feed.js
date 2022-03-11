@@ -36,7 +36,7 @@ const Feed = ({ post, setPosts, user, setShowToastr }) => {
 				{
 					label: "Yes",
 					onClick: async () =>
-						commentId
+						commentId !== ""
 							? await deleteComment(post._id, commentId, setComments, setError)
 							: await deletePost(post._id, setPosts, setShowToastr),
 				},
@@ -65,7 +65,7 @@ const Feed = ({ post, setPosts, user, setShowToastr }) => {
 					</div>
 				</div>
 				{(user.role === "root" || post.user._id === user._id) && (
-					<span className='delete' onClick={handleDelete}>
+					<span className='delete' onClick={() => handleDelete()}>
 						<i className='uil uil-trash-alt'></i>
 					</span>
 				)}

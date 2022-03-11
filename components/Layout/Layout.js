@@ -4,7 +4,7 @@ import React from "react";
 import HeadTags from "./HeadTags";
 import Navbar from "./Navbar";
 
-function Layout({ children }) {
+function Layout({ children, user }) {
 	Router.onRouteChangeStart = () => nprogress.start();
 	Router.onRouteChangeComplete = () => nprogress.done();
 	Router.onRouteChangeError = () => nprogress.done();
@@ -13,7 +13,7 @@ function Layout({ children }) {
 		<>
 			<HeadTags />
 
-			<Navbar />
+			<Navbar user={user} />
 
 			<div>{children}</div>
 		</>

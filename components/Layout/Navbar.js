@@ -1,10 +1,8 @@
 import { useRouter } from "next/router";
 import React from "react";
 
-function Navbar() {
+function Navbar({ user }) {
 	const router = useRouter();
-
-	const isActive = route => router.pathname === route;
 
 	return (
 		<nav>
@@ -19,7 +17,7 @@ function Navbar() {
 						Create
 					</label>
 					<div className='profile-photo'>
-						<img src='/profile.jfif' />
+						<img src={user?.profilePicUrl} alt='user-photo' />
 					</div>
 				</div>
 			</div>
