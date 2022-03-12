@@ -5,6 +5,8 @@ import { parseCookies } from "nookies";
 import { useEffect, useState } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 import Feed from "../components/Layout/Post/Feed";
+import Followers from "../components/Layout/Profile/Followers";
+import Following from "../components/Layout/Profile/Following";
 import ProfileHeader from "../components/Layout/Profile/ProfileHeader";
 import ProfileTabs from "../components/Layout/Profile/ProfileTabs";
 import baseUrl from "../utils/baseUrl";
@@ -63,32 +65,50 @@ const ProfilePage = ({
 				ownAccount={ownAccount}
 				loggedUserFollowStats={loggedUserFollowStats}
 			/>
-			{activeItem === "profile" && (
-				<>
-					{loading ? (
-						<ClipLoader />
-					) : (
-						posts.length > 0 && (
-							<div className='feeds profile-posts'>
-								<ProfileHeader
-									profile={profile}
-									ownAccount={ownAccount}
-									loggedUserFollowStats={loggedUserFollowStats}
-									setLoggedUserFollowStats={setLoggedUserFollowStats}
-								/>
-								{posts.map(post => (
-									<Feed
-										post={post}
-										key={post._id}
-										user={user}
-										setPosts={setPosts}
+			<div className='tab-content'>
+				{activeItem === "profile" && (
+					<>
+						{loading ? (
+							<ClipLoader />
+						) : (
+							posts.length > 0 && (
+								<div className='feeds profile-posts'>
+									<ProfileHeader
+										profile={profile}
+										ownAccount={ownAccount}
+										loggedUserFollowStats={loggedUserFollowStats}
+										setLoggedUserFollowStats={setLoggedUserFollowStats}
 									/>
-								))}
-							</div>
-						)
-					)}
-				</>
-			)}
+									{posts.map(post => (
+										<Feed
+											post={post}
+											key={post._id}
+											user={user}
+											setPosts={setPosts}
+										/>
+									))}
+								</div>
+							)
+						)}
+					</>
+				)}
+				{activeItem === "followers" && (
+					<Followers
+						user={user}
+						loggedUserFollowStats={loggedUserFollowStats}
+						setLoggedUserFollowStats={setLoggedUserFollowStats}
+						profileUserId={profile?.user?._id}
+					/>
+				)}
+				{activeItem === "following" && (
+					<Following
+						user={user}
+						loggedUserFollowStats={loggedUserFollowStats}
+						setLoggedUserFollowStats={setLoggedUserFollowStats}
+						profileUserId={profile?.user?._id}
+					/>
+				)}
+			</div>
 		</div>
 	);
 };

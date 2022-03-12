@@ -74,6 +74,7 @@ h1,h2,h3,h4,h5,p{
   font-size: 0.9rem;
   outline: none;
   border:none;
+  border:1px solid var(--color-primary);
 }
 
 .btn:disabled,.btn:disabled:hover{
@@ -527,6 +528,10 @@ main .container .right{
   cursor:default;
 }
 
+.tab-content{
+  margin-top:126px;
+}
+
 .user-profile .feeds{
   margin-top:500px;
 }
@@ -593,4 +598,19 @@ main .container .right{
   top:300px;
   left:176px;
   display:flex;
+}
+
+.follow-list-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px;
+  border-bottom: 2px solid #ddd;
+}
+
+.follow-list-item img{
+  width: 50px;
+  height: 50px;
+  border-radius:50%;
+  overflow: hidden;
 }
