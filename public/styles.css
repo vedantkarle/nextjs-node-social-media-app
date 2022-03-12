@@ -23,6 +23,8 @@
 }
 
 *{
+  margin:0;
+  padding:0;
   text-decoration: none;
   box-sizing: border-box;
 }
@@ -59,8 +61,7 @@ input{
 }
 
 h1,h2,h3,h4,h5,p{
-  margin-top:0;
-  margin-bottom: 0;
+  margin:0;
 }
 
 .btn{
@@ -152,13 +153,13 @@ main .container{
 
 /* SIDEBAR */
 
-main .container .left{
+.left{
   height:max-content;
   position:sticky;
   top:var(--sticky-top-left);
 }
 
-main .container .left .profile{
+.left .profile{
   padding:var(--card-padding);
   background:var(--color-white);
   border-radius:var(--card-border-radius);
@@ -168,7 +169,7 @@ main .container .left .profile{
   width: 100%;
 }
 
-main .container .left .sidebar{
+.left .sidebar{
   margin-top: 1rem;
   background:var(--color-white);
   border-radius:var(--card-border-radius);
@@ -320,7 +321,7 @@ main .container .left .sidebar{
 
 /* FEEDS */
 
-.middle .feeds .feed{
+.feeds .feed{
   background:var(--color-white);
   border-radius:var(--card-border-radius);
   padding: var(--card-padding);
@@ -329,12 +330,12 @@ main .container .left .sidebar{
   line-height: 1.5;
 }
 
-.middle .feed .head{
+.feed .head{
   display:flex;
   justify-content:space-between;
 }
 
-.middle .feed .user{
+.feed .user{
   display:flex;
   gap:1rem;
 }
@@ -345,20 +346,21 @@ main .container .left .sidebar{
   cursor: pointer;
 }
 
-.middle .feed .photo{
+.feed .photo{
   border-radius:var(--card-border-radius);
   overflow: hidden;
   margin:0.7rem 0;
+  width: 100%;
 }
 
-.middle .feed .text{
+.feed .text{
   border-radius:var(--card-border-radius);
   overflow: hidden;
   margin:0.8rem 0.4rem;
   font-size: 18px;
 }
 
-.middle .feed .action-buttons{
+.feed .action-buttons{
   display:flex;
   justify-content:start;
   align-items: center;
@@ -366,11 +368,11 @@ main .container .left .sidebar{
   margin:0.6rem 0.1rem;
 }
 
-.middle .feed .action-buttons span{
+.feed .action-buttons span{
   cursor: pointer;
 }
 
-.middle .liked-by{
+.liked-by{
   display:flex;
 }
 
@@ -492,4 +494,103 @@ main .container .right{
 .image-modal .post-comments::-webkit-scrollbar-thumb {
   border-radius: 10px;
   -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+
+.tabs{
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top:62px;
+  position:fixed;
+  top:0;
+  width: 100%;
+  border-bottom: 2px solid hsl(252, 75%, 60%);
+  background:var(--color-light);
+  z-index: 99999;
+}
+
+.tab{
+  background:var(--color-light);
+  text-align: center;
+  padding:1.2rem 0.5rem;
+  width:100%;
+  cursor: pointer;
+}
+
+.tab:hover{
+  background-color:hsl(252, 100%, 94%);
+}
+
+.tab.active{
+  background-color:hsl(252, 75%, 60%);
+  color:#fff;
+  cursor:default;
+}
+
+.user-profile .feeds{
+  margin-top:500px;
+}
+
+.user-profile .profile-posts{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width:100%;
+}
+
+.user-profile .feed{
+  width: 800px;
+}
+
+.user-profile .feed .photo{
+  width: 100%;
+}
+
+.profile-header{
+  border-radius:var(--card-border-radius);
+  background:var(--color-white);
+  padding: var(--card-padding);
+  position:absolute;
+  top:126px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  width: 80%;
+  height:360px;
+  z-index: 9;
+}
+
+.profile-header .cover-photo{
+  width: 100%;
+  height:200px;
+  position: relative;
+}
+
+.profile-header .cover-photo img{
+  object-fit:cover;
+}
+
+.profile-header .profile-photo{
+  position: absolute;
+  width:120px;
+  height:120px;
+  border:4px solid #fff;
+  border-radius:50%;
+  top:160px;
+  left:20px;
+}
+
+.profile-header .profile-info{
+  display:flex;
+  position:absolute;
+  left:170px;
+  padding:10px;
+  justify-content: space-between;
+  width:80%;
+}
+
+.profile-header .profile-follow{
+  position:absolute;
+  top:300px;
+  left:176px;
+  display:flex;
 }

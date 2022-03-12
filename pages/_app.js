@@ -12,6 +12,7 @@ function MyApp({ Component, pageProps }) {
 	return (
 		<Layout {...pageProps}>
 			<ToastContainer />
+
 			<Component {...pageProps} />
 		</Layout>
 	);
@@ -24,9 +25,9 @@ MyApp.getInitialProps = async ({ Component, ctx }) => {
 
 	const protectedRoutes =
 		ctx.pathname === "/" ||
-		ctx.pathname === "/{username}" ||
+		ctx.pathname === "/[username]" ||
 		ctx.pathname === "/notifications" ||
-		ctx.pathname === "/post/{postId}" ||
+		ctx.pathname === "/post/[postId]" ||
 		ctx.pathname === "/messages" ||
 		ctx.pathname === "/search";
 

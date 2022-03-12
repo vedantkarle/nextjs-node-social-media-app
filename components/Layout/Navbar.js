@@ -7,7 +7,9 @@ function Navbar({ user }) {
 	return (
 		<nav>
 			<div className='container'>
-				<h2 className='logo'>Social Book</h2>
+				<h2 className='logo' onClick={() => router.push("/")}>
+					Social Book
+				</h2>
 				<div className='search-bar'>
 					<i className='uil uil-search'></i>
 					<input type='search' placeholder='Search...' />

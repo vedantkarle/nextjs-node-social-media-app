@@ -1,7 +1,10 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 
-const Sidebar = ({ user }) => {
+const Sidebar = ({ user, active }) => {
+	const router = useRouter();
+
 	return (
 		<div className='left'>
 			<Link href='/'>
@@ -17,7 +20,7 @@ const Sidebar = ({ user }) => {
 			</Link>
 			<div className='sidebar'>
 				<Link href='/'>
-					<a className='menu-item active'>
+					<a className={active === "home" ? "menu-item active" : "menu-item"}>
 						<span>
 							<i className='uil uil-home'></i>
 						</span>
@@ -25,7 +28,10 @@ const Sidebar = ({ user }) => {
 					</a>
 				</Link>
 				<Link href='/'>
-					<a className='menu-item'>
+					<a
+						className={
+							active === "messages" ? "menu-item active" : "menu-item"
+						}>
 						<span>
 							<i className='uil uil-envelopes'>
 								<small className='notification-count'>9+</small>
@@ -35,7 +41,10 @@ const Sidebar = ({ user }) => {
 					</a>
 				</Link>
 				<Link href='/'>
-					<a className='menu-item'>
+					<a
+						className={
+							active === "notifications" ? "menu-item active" : "menu-item"
+						}>
 						<span>
 							<i className='uil uil-bell'>
 								<small className='notification-count'>9+</small>
@@ -73,8 +82,9 @@ const Sidebar = ({ user }) => {
 						</div>
 					</a>
 				</Link>
-				<Link href='/'>
-					<a className='menu-item'>
+				<Link href={`/${user.username}`}>
+					<a
+						className={active === "account" ? "menu-item active" : "menu-item"}>
 						<span>
 							<i className='uil uil-bell'></i>
 						</span>

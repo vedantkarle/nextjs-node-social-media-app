@@ -7,7 +7,7 @@ const Profile = require("../models/ProfileModel");
 const Follower = require("../models/FollowerModel");
 const Post = require("../models/PostModel");
 
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 router.get("/:username", authMiddleware, async (req, res) => {
 	const { username } = req.params;
@@ -36,9 +36,9 @@ router.get("/:username", authMiddleware, async (req, res) => {
 
 router.get("/posts/:username", authMiddleware, async (req, res) => {
 	try {
-		const { username } = req.query;
+		const { username } = req.params;
 
-		const user = await User.findOne({ username: username.toLowerCase() });
+		const user = await User.findOne({ username: username?.toLowerCase() });
 
 		if (!user) {
 			return res.status(404).send("User not found");
