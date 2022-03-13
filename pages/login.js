@@ -1,4 +1,5 @@
 import cookie from "js-cookie";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { Message } from "semantic-ui-react";
 import { loginUser } from "../utils/authUser";
@@ -42,6 +43,7 @@ function Login() {
 
 	return (
 		<div className='signup-form'>
+			<h2>Login</h2>
 			<form onSubmit={handleSubmit}>
 				{errorMsg !== null && (
 					<Message
@@ -81,6 +83,9 @@ function Login() {
 					</button>
 				</div>
 			</form>
+			<p>
+				New here ? <Link href='/signup'>Signup</Link>
+			</p>
 		</div>
 	);
 }

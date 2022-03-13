@@ -9,6 +9,8 @@ import Followers from "../components/Layout/Profile/Followers";
 import Following from "../components/Layout/Profile/Following";
 import ProfileHeader from "../components/Layout/Profile/ProfileHeader";
 import ProfileTabs from "../components/Layout/Profile/ProfileTabs";
+import Settings from "../components/Layout/Profile/Settings";
+import UpdateProfile from "../components/Layout/Profile/UpdateProfile";
 import baseUrl from "../utils/baseUrl";
 
 const ProfilePage = ({
@@ -98,6 +100,7 @@ const ProfilePage = ({
 						loggedUserFollowStats={loggedUserFollowStats}
 						setLoggedUserFollowStats={setLoggedUserFollowStats}
 						profileUserId={profile?.user?._id}
+						ownAccount={ownAccount}
 					/>
 				)}
 				{activeItem === "following" && (
@@ -106,7 +109,12 @@ const ProfilePage = ({
 						loggedUserFollowStats={loggedUserFollowStats}
 						setLoggedUserFollowStats={setLoggedUserFollowStats}
 						profileUserId={profile?.user?._id}
+						ownAccount={ownAccount}
 					/>
+				)}
+				{activeItem === "updateProfile" && <UpdateProfile profile={profile} />}
+				{activeItem === "settings" && (
+					<Settings newMessagePopup={user?.newMessagePopup} />
 				)}
 			</div>
 		</div>

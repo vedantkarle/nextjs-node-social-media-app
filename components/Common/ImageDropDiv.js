@@ -1,6 +1,7 @@
 import React from "react";
 
 const ImageDropDiv = ({
+	highlighted,
 	setHighlighted,
 	inputRef,
 	handleChange,
@@ -39,8 +40,11 @@ const ImageDropDiv = ({
 					}}>
 					{mediaPreview === null ? (
 						<>
-							<div>
-								<h2>Drag n Drop or Click to upload image</h2>
+							<div
+								className={
+									highlighted ? "image-drop highlighted" : "image-drop"
+								}>
+								<h5>Drag n Drop or Click to upload image</h5>
 							</div>
 						</>
 					) : (

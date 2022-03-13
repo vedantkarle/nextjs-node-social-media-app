@@ -1,6 +1,7 @@
 import axios from "axios";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { Divider, Message } from "semantic-ui-react";
+import { Message } from "semantic-ui-react";
 import CommonInputs from "../components/Common/CommonInputs";
 import ImageDropDiv from "../components/Common/ImageDropDiv";
 import { registerUser } from "../utils/authUser";
@@ -122,6 +123,7 @@ const Signup = () => {
 						setHighlighted={setHighlighted}
 						handleChange={handleChange}
 					/>
+					<br />
 					<input
 						label='Name'
 						placeholder='Name'
@@ -169,7 +171,7 @@ const Signup = () => {
 						setShowSocialLinks={setShowSocialLinks}
 						handleChange={handleChange}
 					/>
-					<Divider hidden />
+					<br />
 					<button
 						className='btn btn-primary'
 						type='submit'
@@ -178,6 +180,9 @@ const Signup = () => {
 					</button>
 				</div>
 			</form>
+			<p>
+				Already have an accout ? <Link href='/login'>Login</Link>
+			</p>
 		</div>
 	);
 };

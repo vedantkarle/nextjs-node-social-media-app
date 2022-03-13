@@ -1,6 +1,6 @@
 import axios from "axios";
 import cookie from "js-cookie";
-import { Router } from "next/router";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Search } from "semantic-ui-react";
@@ -59,6 +59,8 @@ const SearchBar = () => {
 		setLoading(false);
 	};
 
+	const router = useRouter();
+
 	useEffect(() => {
 		if (query.length === 0 && loading) {
 			setLoading(false);
@@ -85,7 +87,7 @@ const SearchBar = () => {
 					resultRenderer={ResultRenderer}
 					minCharacters={1}
 					onResultSelect={(e, data) => {
-						Router.push(`/${data.result.title}`);
+						router.push(`/${data.result.title}`);
 					}}
 				/>
 			</div>

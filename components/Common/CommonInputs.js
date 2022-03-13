@@ -16,6 +16,7 @@ const CommonInputs = ({
 				onChange={handleChange}
 				placeholder='Bio'></textarea>
 			<button
+				className='btn btn-primary'
 				type='button'
 				onClick={() => setShowSocialLinks(!showSocialLinks)}>
 				Add Social Links
@@ -23,10 +24,30 @@ const CommonInputs = ({
 			{showSocialLinks && (
 				<>
 					<Divider />
-					<input name='facebook' value={facebook} onChange={handleChange} />
-					<input name='twitter' value={twitter} onChange={handleChange} />
-					<input name='instagram' value={instagram} onChange={handleChange} />
-					<input name='youtube' value={youtube} onChange={handleChange} />
+					<input
+						placeholder='Facebook'
+						name='facebook'
+						value={facebook}
+						onChange={handleChange}
+					/>
+					<input
+						placeholder='Twitter'
+						name='twitter'
+						value={twitter}
+						onChange={handleChange}
+					/>
+					<input
+						placeholder='Instagram'
+						name='instagram'
+						value={instagram}
+						onChange={handleChange}
+					/>
+					<input
+						placeholder='Youtube'
+						name='youtube'
+						value={youtube}
+						onChange={handleChange}
+					/>
 
 					<p>Social Media Links Are Optional</p>
 				</>

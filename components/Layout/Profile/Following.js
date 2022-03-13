@@ -15,8 +15,6 @@ const Following = ({
 	const [loading, setLoading] = useState(false);
 	const [followLoading, setFollowLoading] = useState(false);
 
-	const ownAccount = profileUserId === user._id;
-
 	useEffect(() => {
 		(async () => {
 			setLoading(true);
@@ -50,6 +48,8 @@ const Following = ({
 							f => f.user === following.user._id,
 						).length > 0;
 
+					const ownAccount = following.user._id === user._id;
+
 					return (
 						<div key={following?.user?._id} className='follow-list-item'>
 							<div style={{ display: "flex", alignItems: "center" }}>
@@ -64,11 +64,11 @@ const Following = ({
 										setFollowLoading(true);
 										isFollowing
 											? await unFollowUser(
-													follower?.user?._id,
+													following?.user?._id,
 													setLoggedUserFollowStats,
 											  )
 											: await followUser(
-													follower?.user?._id,
+													following?.user?._id,
 													setLoggedUserFollowStats,
 											  );
 										setFollowLoading(false);

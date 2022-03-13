@@ -15,8 +15,6 @@ const Followers = ({
 	const [loading, setLoading] = useState(false);
 	const [followLoading, setFollowLoading] = useState(false);
 
-	const ownAccount = profileUserId === user._id;
-
 	useEffect(() => {
 		(async () => {
 			setLoading(true);
@@ -49,6 +47,8 @@ const Followers = ({
 						loggedUserFollowStats.following.filter(
 							f => f.user === follower.user._id,
 						).length > 0;
+
+					const ownAccount = follower.user._id === user._id;
 
 					return (
 						<div key={follower?.user?._id} className='follow-list-item'>
