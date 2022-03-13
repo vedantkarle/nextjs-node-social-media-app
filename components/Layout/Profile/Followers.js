@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 import baseUrl from "../../../utils/baseUrl";
+import { followUser, unFollowUser } from "../../../utils/profileActions";
 
 const Followers = ({
 	user,
@@ -12,6 +13,9 @@ const Followers = ({
 }) => {
 	const [followers, setFollowers] = useState([]);
 	const [loading, setLoading] = useState(false);
+	const [followLoading, setFollowLoading] = useState(false);
+
+	const ownAccount = profileUserId === user._id;
 
 	useEffect(() => {
 		(async () => {
@@ -41,8 +45,8 @@ const Followers = ({
 				followers.length > 0 &&
 				followers.map(follower => {
 					const isFollowing =
-						loggedUserFollowStats.followers.length > 0 &&
-						loggedUserFollowStats.followers.filter(
+						loggedUserFollowStats.following.length > 0 &&
+						loggedUserFollowStats.following.filter(
 							f => f.user === follower.user._id,
 						).length > 0;
 
@@ -54,16 +58,31 @@ const Followers = ({
 									{follower?.user?.name}
 								</span>
 							</div>
-							<button
-								className={isFollowing ? "btn" : "btn btn-primary"}
-								disabled={loading}>
-								{isFollowing ? (
-									<i className='uil uil-user-check'></i>
-								) : (
-									<i className='uil uil-user-plus'></i>
-								)}{" "}
-								{isFollowing ? "Following" : "Follow"}
-							</button>
+							{!ownAccount && (
+								<button
+									onClick={async () => {
+										setFollowLoading(true);
+										isFollowing
+											? await unFollowUser(
+													follower?.user?._id,
+													setLoggedUserFollowStats,
+											  )
+											: await followUser(
+													follower?.user?._id,
+													setLoggedUserFollowStats,
+											  );
+										setFollowLoading(false);
+									}}
+									className={isFollowing ? "btn" : "btn btn-primary"}
+									disabled={followLoading}>
+									{isFollowing ? (
+										<i className='uil uil-user-check'></i>
+									) : (
+										<i className='uil uil-user-plus'></i>
+									)}{" "}
+									{isFollowing ? "Following" : "Follow"}
+								</button>
+							)}
 						</div>
 					);
 				})

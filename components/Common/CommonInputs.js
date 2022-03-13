@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Divider, Form, Message, TextArea } from "semantic-ui-react";
+import { Divider } from "semantic-ui-react";
 
 const CommonInputs = ({
 	user: { bio, facebook, instagram, youtube, twitter },
@@ -9,59 +9,26 @@ const CommonInputs = ({
 }) => {
 	return (
 		<>
-			<Form.Field
+			<textarea
 				required
-				control={TextArea}
 				name='bio'
 				value={bio}
 				onChange={handleChange}
-				placeholder='Bio'
-			/>
-			<Button
-				content='Add Social Links'
-				color='red'
-				icon='at'
+				placeholder='Bio'></textarea>
+			<button
 				type='button'
-				onClick={() => setShowSocialLinks(!showSocialLinks)}
-			/>
+				onClick={() => setShowSocialLinks(!showSocialLinks)}>
+				Add Social Links
+			</button>
 			{showSocialLinks && (
 				<>
 					<Divider />
-					<Form.Input
-						icon='facebook f'
-						iconPosition='left'
-						name='facebook'
-						value={facebook}
-						onChange={handleChange}
-					/>
-					<Form.Input
-						icon='twitter'
-						iconPosition='left'
-						name='twitter'
-						value={twitter}
-						onChange={handleChange}
-					/>
-					<Form.Input
-						icon='instagram'
-						iconPosition='left'
-						name='instagram'
-						value={instagram}
-						onChange={handleChange}
-					/>
-					<Form.Input
-						icon='youtube'
-						iconPosition='left'
-						name='youtube'
-						value={youtube}
-						onChange={handleChange}
-					/>
+					<input name='facebook' value={facebook} onChange={handleChange} />
+					<input name='twitter' value={twitter} onChange={handleChange} />
+					<input name='instagram' value={instagram} onChange={handleChange} />
+					<input name='youtube' value={youtube} onChange={handleChange} />
 
-					<Message
-						icon='attention'
-						info
-						size='small'
-						header='Social Media Links Are Optional'
-					/>
+					<p>Social Media Links Are Optional</p>
 				</>
 			)}
 		</>

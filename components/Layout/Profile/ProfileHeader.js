@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { followUser, unFollowUser } from "../../../utils/profileActions";
 
 const ProfileHeader = ({
 	profile,
@@ -7,6 +8,7 @@ const ProfileHeader = ({
 	setLoggedUserFollowStats,
 }) => {
 	const [loading, setLoading] = useState(false);
+
 	const isFollowing =
 		loggedUserFollowStats.following.length > 0 &&
 		loggedUserFollowStats.following.filter(
@@ -58,7 +60,22 @@ const ProfileHeader = ({
 			</div>
 			{!ownAccount && (
 				<div className='profile-follow'>
-					<button className='btn btn-primary' disabled={loading}>
+					<button
+						onClick={async () => {
+							setLoading(true);
+							isFollowing
+								? await unFollowUser(
+										profile?.user?._id,
+										setLoggedUserFollowStats,
+								  )
+								: await followUser(
+										profile?.user?._id,
+										setLoggedUserFollowStats,
+								  );
+							setLoading(false);
+						}}
+						className={isFollowing ? "btn" : "btn btn-primary"}
+						disabled={loading}>
 						{isFollowing ? (
 							<i className='uil uil-user-check'></i>
 						) : (

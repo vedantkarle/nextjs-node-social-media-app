@@ -68,17 +68,17 @@ const ProfilePage = ({
 			<div className='tab-content'>
 				{activeItem === "profile" && (
 					<>
+						<ProfileHeader
+							profile={profile}
+							ownAccount={ownAccount}
+							loggedUserFollowStats={loggedUserFollowStats}
+							setLoggedUserFollowStats={setLoggedUserFollowStats}
+						/>
 						{loading ? (
 							<ClipLoader />
 						) : (
 							posts.length > 0 && (
 								<div className='feeds profile-posts'>
-									<ProfileHeader
-										profile={profile}
-										ownAccount={ownAccount}
-										loggedUserFollowStats={loggedUserFollowStats}
-										setLoggedUserFollowStats={setLoggedUserFollowStats}
-									/>
 									{posts.map(post => (
 										<Feed
 											post={post}

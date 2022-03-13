@@ -1,12 +1,8 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { Button, Divider, Form, Message, Segment } from "semantic-ui-react";
+import { Divider, Message } from "semantic-ui-react";
 import CommonInputs from "../components/Common/CommonInputs";
 import ImageDropDiv from "../components/Common/ImageDropDiv";
-import {
-	FooterMessage,
-	HeaderMessage,
-} from "../components/Common/WelcomeMessage";
 import { registerUser } from "../utils/authUser";
 import baseUrl from "../utils/baseUrl";
 import upload from "../utils/uploadPicToCloudinary";
@@ -106,20 +102,17 @@ const Signup = () => {
 	}, [username]);
 
 	return (
-		<>
-			<HeaderMessage />
-
-			<Form
-				loading={formLoading}
-				error={error !== null}
-				onSubmit={handleSubmit}>
-				<Message
-					error
-					header='Oops!'
-					content={error}
-					onDismiss={() => setError(null)}
-				/>
-				<Segment>
+		<div className='signup-form'>
+			<form onSubmit={handleSubmit}>
+				{error && (
+					<Message
+						error
+						header='Oops!'
+						content={error}
+						onDismiss={() => setError(null)}
+					/>
+				)}
+				<div className='form-inputs'>
 					<ImageDropDiv
 						mediaPreview={mediaPreview}
 						setMediaPreview={setMediaPreview}
@@ -129,49 +122,33 @@ const Signup = () => {
 						setHighlighted={setHighlighted}
 						handleChange={handleChange}
 					/>
-					<Form.Input
+					<input
 						label='Name'
 						placeholder='Name'
 						name='name'
 						value={name}
 						onChange={handleChange}
-						fluid
-						icon='user'
-						iconPosition='left'
 						required
 					/>
-					<Form.Input
+					<input
 						label='Email'
 						placeholder='Email'
 						name='email'
 						value={email}
 						onChange={handleChange}
-						fluid
-						icon='envelope'
-						iconPosition='left'
 						type='email'
 						required
 					/>
-					<Form.Input
+					<input
 						label='Password'
 						placeholder='Password'
 						name='password'
 						value={password}
 						onChange={handleChange}
-						fluid
-						icon={{
-							name: "eye",
-							circular: true,
-							link: true,
-							onClick: () => setShowPassword(!showPassword),
-						}}
-						iconPosition='left'
 						required
-						type={showPassword ? "text" : "password"}
+						type='password'
 					/>
-					<Form.Input
-						loading={usernameLoading}
-						error={!usernameAvailable}
+					<input
 						label='Username'
 						placeholder='Username'
 						value={username}
@@ -183,10 +160,8 @@ const Signup = () => {
 								setUsernameAvailable(false);
 							}
 						}}
-						fluid
-						iconPosition='left'
 						required
-						icon={usernameAvailable ? "check" : "close"}
+						readOnly={usernameLoading}
 					/>
 					<CommonInputs
 						user={user}
@@ -195,17 +170,15 @@ const Signup = () => {
 						handleChange={handleChange}
 					/>
 					<Divider hidden />
-					<Button
-						icon='signup'
-						color='orange'
+					<button
+						className='btn btn-primary'
 						type='submit'
-						content='Signup'
-						disabled={submitDisabled || !usernameAvailable}
-					/>
-				</Segment>
-			</Form>
-			<FooterMessage />
-		</>
+						disabled={submitDisabled || !usernameAvailable}>
+						Signup
+					</button>
+				</div>
+			</form>
+		</div>
 	);
 };
 

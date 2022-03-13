@@ -121,13 +121,13 @@ router.post("/follow/:userToFollowId", authMiddleware, async (req, res) => {
 	}
 });
 
-router.put("/unfollow/:userToUnfollowId", authMiddleware, async (req, res) => {
+router.post("/unfollow/:userToUnfollowId", authMiddleware, async (req, res) => {
 	const { userId } = req;
-	const { userToUnFollowId } = req.params;
+	const { userToUnfollowId } = req.params;
 
 	try {
 		const user = await Follower.findOne({ user: userId });
-		const userToUnFollow = await Follower.findOne({ user: userToUnFollowId });
+		const userToUnFollow = await Follower.findOne({ user: userToUnfollowId });
 
 		if (!user || !userToUnFollow) {
 			return res.status(404).send("User not found");
@@ -136,7 +136,7 @@ router.put("/unfollow/:userToUnfollowId", authMiddleware, async (req, res) => {
 		const isFollowing =
 			user.following.length > 0 &&
 			user.following.filter(
-				following => following.user.toString() === userToUnFollowId,
+				following => following.user.toString() === userToUnfollowId,
 			).length > 0;
 
 		if (!isFollowing) {
@@ -145,7 +145,7 @@ router.put("/unfollow/:userToUnfollowId", authMiddleware, async (req, res) => {
 
 		const removeFollowing = user.following
 			.map(following => following.user.toString())
-			.indexOf(userToUnFollowId);
+			.indexOf(userToUnfollowId);
 
 		await user.following.splice(removeFollowing, 1);
 		await user.save();

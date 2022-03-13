@@ -1,11 +1,6 @@
 import cookie from "js-cookie";
 import React, { useEffect, useState } from "react";
-// import "semantic-ui-css/semantic.min.css";
-import { Button, Divider, Form, Message, Segment } from "semantic-ui-react";
-import {
-	FooterMessage,
-	HeaderMessage,
-} from "../components/Common/WelcomeMessage";
+import { Message } from "semantic-ui-react";
 import { loginUser } from "../utils/authUser";
 
 function Login() {
@@ -46,12 +41,8 @@ function Login() {
 	}, []);
 
 	return (
-		<>
-			<HeaderMessage />
-			<Form
-				loading={formLoading}
-				error={errorMsg !== null}
-				onSubmit={handleSubmit}>
+		<div className='signup-form'>
+			<form onSubmit={handleSubmit}>
 				{errorMsg !== null && (
 					<Message
 						error
@@ -61,51 +52,36 @@ function Login() {
 					/>
 				)}
 
-				<Segment>
-					<Form.Input
+				<div className='form-inputs'>
+					<input
 						required
 						label='Email'
 						placeholder='Email'
 						name='email'
 						value={email}
 						onChange={handleChange}
-						fluid
-						icon='envelope'
-						iconPosition='left'
 						type='email'
 					/>
 
-					<Form.Input
+					<input
 						label='Password'
 						placeholder='Password'
 						name='password'
 						value={password}
 						onChange={handleChange}
-						fluid
-						icon={{
-							name: "eye",
-							circular: true,
-							link: true,
-							onClick: () => setShowPassword(!showPassword),
-						}}
-						iconPosition='left'
-						type={showPassword ? "text" : "password"}
+						type='password'
 						required
 					/>
 
-					<Divider hidden />
-					<Button
-						icon='signup'
-						content='Login'
+					<button
+						className='btn btn-primary'
 						type='submit'
-						color='orange'
-						disabled={submitDisabled}
-					/>
-				</Segment>
-			</Form>
-
-			<FooterMessage />
-		</>
+						disabled={submitDisabled}>
+						Login
+					</button>
+				</div>
+			</form>
+		</div>
 	);
 }
 
