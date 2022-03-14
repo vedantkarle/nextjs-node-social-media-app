@@ -36,24 +36,60 @@ router.get("/", authMiddleware, async (req, res) => {
 
 	const number = Number(pageNumber);
 	const size = 8;
+	const { userId } = req;
+
+	const loggedUser = await Follower.findOne({ user: userId }).select(
+		"-followers",
+	);
 
 	try {
-		let posts;
+		let posts = [];
 
 		if (number === 1) {
-			posts = await Post.find({})
-				.limit(size)
-				.sort({ createdAt: -1 })
-				.populate("user")
-				.populate("comments.user");
+			if (loggedUser.following.length > 0) {
+				posts = await Post.find({
+					user: {
+						$in: [
+							userId,
+							...loggedUser.following.map(following => following.user),
+						],
+					},
+				})
+					.limit(size)
+					.sort({ createdAt: -1 })
+					.populate("user")
+					.populate("comments.user");
+			} else {
+				posts = await Post.find({ user: userId })
+					.limit(size)
+					.sort({ createdAt: -1 })
+					.populate("user")
+					.populate("comments.user");
+			}
 		} else {
 			const skip = size * (number - 1);
-			posts = await Post.find({})
-				.skip(skip)
-				.limit(size)
-				.sort({ createdAt: -1 })
-				.populate("user")
-				.populate("comments.user");
+			if (loggedUser.following.length > 0) {
+				posts = await Post.find({
+					user: {
+						$in: [
+							userId,
+							...loggedUser.following.map(following => following.user),
+						],
+					},
+				})
+					.skip(skip)
+					.limit(size)
+					.sort({ createdAt: -1 })
+					.populate("user")
+					.populate("comments.user");
+			} else {
+				posts = await Post.find({ user: userId })
+					.skip(skip)
+					.limit(size)
+					.sort({ createdAt: -1 })
+					.populate("user")
+					.populate("comments.user");
+			}
 		}
 
 		res.status(200).json(posts);

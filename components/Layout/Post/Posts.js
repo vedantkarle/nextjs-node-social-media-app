@@ -3,7 +3,6 @@ import cookie from "js-cookie";
 import React, { useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import baseUrl from "../../../utils/baseUrl";
-import CreatePostForm from "./CreatePostForm";
 import Feed from "./Feed";
 
 const Posts = ({ posts, user, setPosts, setShowToastr }) => {
@@ -27,30 +26,23 @@ const Posts = ({ posts, user, setPosts, setShowToastr }) => {
 	};
 
 	return (
-		<div className='middle'>
-			<CreatePostForm
-				user={user}
-				setPosts={setPosts}
-				setShowToastr={setShowToastr}
-			/>
-			<div className='feeds'>
-				<InfiniteScroll
-					hasMore={hasMore}
-					next={fetchDataOnScroll}
-					loader={<div>Fetching...</div>}
-					endMessage={<div>No More Posts</div>}
-					dataLength={posts?.length}>
-					{posts.map(post => (
-						<Feed
-							key={post._id}
-							post={post}
-							setPosts={setPosts}
-							user={user}
-							setShowToastr={setShowToastr}
-						/>
-					))}
-				</InfiniteScroll>
-			</div>
+		<div className='feeds'>
+			<InfiniteScroll
+				hasMore={hasMore}
+				next={fetchDataOnScroll}
+				loader={<div>Fetching...</div>}
+				endMessage={<div>No More Posts</div>}
+				dataLength={posts?.length}>
+				{posts.map(post => (
+					<Feed
+						key={post._id}
+						post={post}
+						setPosts={setPosts}
+						user={user}
+						setShowToastr={setShowToastr}
+					/>
+				))}
+			</InfiniteScroll>
 		</div>
 	);
 };

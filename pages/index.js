@@ -2,6 +2,7 @@ import axios from "axios";
 import { parseCookies } from "nookies";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import CreatePostForm from "../components/Layout/Post/CreatePostForm";
 import Posts from "../components/Layout/Post/Posts";
 import SearchBar from "../components/Layout/SearchBar";
 import Sidebar from "../components/Layout/Sidebar";
@@ -26,16 +27,23 @@ const Index = ({ user, postsData, errorLoading }) => {
 		<main>
 			<div className='container'>
 				<Sidebar user={user} />
-				{posts.length === 0 || errorLoading ? (
-					<div>No Posts</div>
-				) : (
-					<Posts
+				<div className='middle'>
+					<CreatePostForm
 						user={user}
-						posts={posts}
 						setPosts={setPosts}
 						setShowToastr={setShowToastr}
 					/>
-				)}
+					{posts.length === 0 || errorLoading ? (
+						<div>No Posts</div>
+					) : (
+						<Posts
+							user={user}
+							posts={posts}
+							setPosts={setPosts}
+							setShowToastr={setShowToastr}
+						/>
+					)}
+				</div>
 				<SearchBar />
 			</div>
 		</main>

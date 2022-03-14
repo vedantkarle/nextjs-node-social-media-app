@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { updatePassword } from "../../../utils/profileActions";
 
 const UpdatePassword = ({ setSuccess, setError }) => {
 	const [userPasswords, setUserPasswords] = useState({
@@ -20,7 +21,18 @@ const UpdatePassword = ({ setSuccess, setError }) => {
 	};
 
 	return (
-		<form className='update-password-form'>
+		<form
+			className='update-password-form'
+			onSubmit={async e => {
+				e.preventDefault();
+				setLoading(true);
+				await updatePassword(setSuccess, userPasswords);
+				setUserPasswords({
+					currentPassword: "",
+					newPassword: "",
+				});
+				setLoading(false);
+			}}>
 			<label>Current Password</label>
 			<input
 				type='password'

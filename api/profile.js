@@ -212,12 +212,12 @@ router.post("/settings/password", authMiddleware, async (req, res) => {
 
 		const user = await User.findById(req.userId).select("+password");
 
-		const isPasswordsValid = await bcrypt.compare(
+		const isPasswordValid = await bcrypt.compare(
 			currentPassword,
 			user.password,
 		);
 
-		if (!isPassword) return res.status(401).send("Invalid Password");
+		if (!isPasswordValid) return res.status(401).send("Invalid Password");
 
 		user.password = await bcrypt.hash(newPassword, 10);
 		await user.save();

@@ -9,6 +9,7 @@ import {
 import "react-accessible-accordion/dist/fancy-example.css";
 import Switch from "react-switch";
 import { toast } from "react-toastify";
+import { toggleMessagePopup } from "../../../utils/profileActions";
 import UpdatePassword from "./UpdatePassword";
 
 const Settings = ({ newMessagePopup }) => {
@@ -21,8 +22,14 @@ const Settings = ({ newMessagePopup }) => {
 	const isFirstRun = useRef(true);
 
 	useEffect(() => {
-		success && toast.success("Updates Successfully");
-		error && toast.error("Something went wrong.Try Again");
+		success &&
+			toast.success("Updated Successfully", {
+				position: "bottom-center",
+			});
+		error &&
+			toast.error("Something went wrong.Try Again", {
+				position: "bottom-center",
+			});
 	}, [success, error]);
 
 	useEffect(() => {
@@ -56,7 +63,12 @@ const Settings = ({ newMessagePopup }) => {
 							Control whether a Popup should appear when there is new message
 						</div>
 						<br />
-						<Switch onChange={() => {}} checked={popupSetting} />
+						<Switch
+							onChange={() => {
+								toggleMessagePopup(popupSetting, setPopupSetting, setSuccess);
+							}}
+							checked={popupSetting}
+						/>
 					</AccordionItemPanel>
 				</AccordionItem>
 			</Accordion>
