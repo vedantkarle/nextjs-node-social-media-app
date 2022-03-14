@@ -40,7 +40,7 @@ const Sidebar = ({ user, active }) => {
 						<h3>Messages</h3>
 					</a>
 				</Link>
-				<Link href='/'>
+				<Link href='/notifications'>
 					<a
 						className={
 							active === "notifications" ? "menu-item active" : "menu-item"

@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/UserModel");
+const Notification = require("../models/NotificationModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const isEmail = require("validator/lib/isEmail");
@@ -40,6 +41,12 @@ router.post("/", async (req, res) => {
 		const match = await bcrypt.compare(password, user.password);
 
 		if (!match) return res.status(401).send("Invalid credentials");
+
+		const notificationModel = await Notification.findOne({ user: user._id });
+
+		if (!notificationModel) {
+			await Notification.create({ user: user._id, notifications: [] });
+		}
 
 		const payload = { userId: user._id };
 

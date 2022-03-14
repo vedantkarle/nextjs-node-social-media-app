@@ -5,6 +5,12 @@ const Post = require("../models/PostModel");
 const Follower = require("../models/FollowerModel");
 const authMiddleware = require("../middlewares/authMiddleware");
 const uuid = require("uuid").v4;
+const {
+	newLikeNotification,
+	removeLikeNotification,
+	newCommentNotification,
+	removeCommentNotification,
+} = require("../utilsServer/notificationActions");
 
 router.post("/", authMiddleware, async (req, res) => {
 	const { text, location, picUrl } = req.body;
@@ -165,11 +171,18 @@ router.post("/like/:postId", authMiddleware, async (req, res) => {
 			);
 			post.likes = likes;
 			await post.save();
+			if (post.user.toString() !== req.userId) {
+				await removeLikeNotification(req.userId, postId, post.user.toString());
+			}
 			return res.status(200).send("Post Unliked");
 		}
 
 		await post.likes.unshift({ user: req.userId });
 		await post.save();
+
+		if (post.user.toString() !== req.userId) {
+			await newLikeNotification(req.userId, postId, post.user.toString());
+		}
 
 		res.status(200).send("Post liked");
 	} catch (error) {
@@ -216,6 +229,16 @@ router.post("/comment/:postId", authMiddleware, async (req, res) => {
 		await post.comments.unshift(newComment);
 		await post.save();
 
+		if (post.user.toString() !== req.userId) {
+			await newCommentNotification(
+				req.userId,
+				postId,
+				newComment._id,
+				post.user.toString(),
+				text,
+			);
+		}
+
 		res.status(200).send(newComment._id);
 	} catch (error) {
 		console.error(error);
@@ -245,6 +268,15 @@ router.delete("/:postId/:commentId", authMiddleware, async (req, res) => {
 
 				await post.comments.splice(indexOf, 1);
 				await post.save();
+
+				if (post.user.toString() !== req.userId) {
+					await removeCommentNotification(
+						req.userId,
+						postId,
+						newComment._id,
+						post.user.toString(),
+					);
+				}
 
 				return res.status(200).send("Comment deleted successfully");
 			} else {
