@@ -164,7 +164,7 @@ router.post("/unfollow/:userToUnfollowId", authMiddleware, async (req, res) => {
 		await userToUnFollow.followers.splice(removeFollowers, 1);
 		await userToUnFollow.save();
 
-		await removeFollowerNotification(userId, userToUnFollowId);
+		await removeFollowerNotification(userId, userToUnfollowId);
 
 		res.status(200).send("Success");
 	} catch (error) {
