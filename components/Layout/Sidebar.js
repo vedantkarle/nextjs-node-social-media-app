@@ -1,3 +1,4 @@
+import cookie from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
@@ -27,7 +28,7 @@ const Sidebar = ({ user, active }) => {
 						<h3>Home</h3>
 					</a>
 				</Link>
-				<Link href='/'>
+				<Link href='/messages'>
 					<a
 						className={
 							active === "messages" ? "menu-item active" : "menu-item"
@@ -86,15 +87,21 @@ const Sidebar = ({ user, active }) => {
 					<a
 						className={active === "account" ? "menu-item active" : "menu-item"}>
 						<span>
-							<i className='uil uil-bell'></i>
+							<i className='uil uil-user-square'></i>
 						</span>
 						<h3>Account</h3>
 					</a>
 				</Link>
-				<Link href='/'>
-					<a className='menu-item'>
+
+				<Link href='#'>
+					<a
+						className='menu-item'
+						onClick={() => {
+							cookie.remove("token");
+							router.push("/");
+						}}>
 						<span>
-							<i className='uil uil-bell'></i>
+							<i className='uil uil-user-square'></i>
 						</span>
 						<h3>Logout</h3>
 					</a>

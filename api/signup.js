@@ -4,6 +4,7 @@ const User = require("../models/UserModel");
 const Follower = require("../models/FollowerModel");
 const Profile = require("../models/ProfileModel");
 const Notification = require("../models/NotificationModel");
+const Chat = require("../models/ChatModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const isEmail = require("validator/lib/isEmail");
@@ -87,6 +88,8 @@ router.post("/", async (req, res) => {
 		});
 
 		await Notification.create({ user: user._id, notifications: [] });
+
+		await Chat.create({ user: user._id, chats: [] });
 
 		const payload = { userId: user._id };
 

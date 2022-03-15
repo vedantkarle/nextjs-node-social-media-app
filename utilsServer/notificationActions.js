@@ -40,7 +40,7 @@ const newLikeNotification = async (userId, postId, userToNotifyId) => {
 
 const removeLikeNotification = async (userId, postId, userToNotifyId) => {
 	try {
-		await NotificationModel.findOneAndUpdate(
+		await Notification.findOneAndUpdate(
 			{ user: userToNotifyId },
 			{
 				$pull: {
