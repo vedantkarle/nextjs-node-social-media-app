@@ -2,13 +2,12 @@ import axios from "axios";
 import cookie from "js-cookie";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import { Search } from "semantic-ui-react";
 import baseUrl from "../../../utils/baseUrl";
 
 let cancel;
 
-const ChatListSearch = () => {
+const ChatListSearch = ({ chats, setChats }) => {
 	const [query, setQuery] = useState("");
 	const [loading, setLoading] = useState(false);
 	const [results, setResults] = useState([]);
@@ -39,27 +38,40 @@ const ChatListSearch = () => {
 			}
 
 			const mappedResults = res?.data?.users?.map(result => ({
+				_id: result._id,
 				title: result.username,
 				image: result.profilePicUrl,
 			}));
 
 			setResults(mappedResults);
 		} catch (error) {
-			toast.error("Error in searching", {
-				position: "top-right",
-				autoClose: 2000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-			});
+			console.error(error);
 		}
 
 		setLoading(false);
 	};
 
 	const router = useRouter();
+
+	const addChat = async result => {
+		const alreadyInChat =
+			chats.length > 0 &&
+			chats?.filter(chat => chat?.messagesWith === result._id).length > 0;
+
+		if (alreadyInChat) {
+			return router.push(`/messages?message=${result?._id}`);
+		} else {
+			const newChat = {
+				messagesWith: result?._id,
+				name: result?.title,
+				profilePicUrl: result?.image,
+				date: Date.now(),
+			};
+			setChats(prev => [newChat, ...prev]);
+
+			router.push(`/messages?message=${result?._id}`);
+		}
+	};
 
 	useEffect(() => {
 		if (query.length === 0 && loading) {
@@ -87,7 +99,7 @@ const ChatListSearch = () => {
 					resultRenderer={ResultRenderer}
 					minCharacters={1}
 					onResultSelect={(e, data) => {
-						router.push(`/${data.result.title}`);
+						addChat(data.result);
 					}}
 				/>
 			</div>
@@ -97,7 +109,7 @@ const ChatListSearch = () => {
 
 const ResultRenderer = ({ title, image }) => {
 	return (
-		<div className='search-list'>
+		<div className='search-list' style={{ cursor: "pointer" }}>
 			<img src={image} />
 			<h5>{title}</h5>
 		</div>

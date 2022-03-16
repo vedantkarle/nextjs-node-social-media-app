@@ -6,7 +6,7 @@ const Avatar = ({ image, isOnline }) => {
 			<div className='avatar-img'>
 				<img src={image} alt='#' />
 			</div>
-			<span className={`isOnline ${isOnline}`}></span>
+			<span className={`isOnline ${isOnline ? "active" : ""}`}></span>
 		</div>
 	);
 };

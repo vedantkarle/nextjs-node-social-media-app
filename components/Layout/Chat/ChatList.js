@@ -2,11 +2,11 @@ import React from "react";
 import ChatListItems from "./ChatListItems";
 import ChatListSearch from "./ChatListSearch";
 
-const ChatList = ({ chats }) => {
+const ChatList = ({ chats, setChats, connectedUsers }) => {
 	return (
 		<div className='main__chatlist'>
 			<div className='chatList__search'>
-				<ChatListSearch />
+				<ChatListSearch chats={chats} setChats={setChats} />
 			</div>
 			<div className='chatlist__heading'>
 				<h2>Chats</h2>
@@ -19,6 +19,7 @@ const ChatList = ({ chats }) => {
 								animationDelay={index + 1}
 								key={index}
 								chat={item}
+								connectedUsers={connectedUsers}
 							/>
 						);
 					})

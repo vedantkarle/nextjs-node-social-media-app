@@ -995,7 +995,7 @@ main .container .right{
   position: absolute;
   bottom: 0;
   right: 0;
-  background-color: #ddd;
+  background-color: crimson;
   border-radius: 50%;
   border: 2px solid #fff;
 }
