@@ -9,6 +9,7 @@ const io = require("socket.io")(server);
 require("dotenv").config({ path: "./config.env" });
 const connectDb = require("./utilsServer/connectDb");
 const { addUser, removeUser } = require("./utilsServer/roomActions");
+const { loadMessages, sendMsg } = require("./utilsServer/messageActions");
 const PORT = process.env.PORT || 3000;
 app.use(express.json());
 connectDb();
@@ -27,6 +28,22 @@ io.on("connection", socket => {
 	socket.on("disconnect", () => {
 		removeUser(socket.id);
 		console.log("disconnected");
+	});
+
+	socket.on("loadMessages", async ({ userId, messagesWith }) => {
+		const { chat, error } = await loadMessages(userId, messagesWith);
+		if (!error) {
+			socket.emit("messagesLoaded", { chat });
+		} else {
+			socket.emit("noChatFound");
+		}
+	});
+
+	socket.on("sendMsg", async ({ userId, msgSendToUserId, msg }) => {
+		const { newMsg, error } = await sendMsg(userId, msgSendToUserId, msg);
+		if (!error) {
+			socket.emit("msgSent", { newMsg });
+		}
 	});
 });
 

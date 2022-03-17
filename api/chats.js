@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Chat = require("../models/ChatModel");
+const User = require("../models/UserModel");
 const authMiddleware = require("../middlewares/authMiddleware");
 
 router.get("/", authMiddleware, async (req, res) => {
@@ -24,6 +25,23 @@ router.get("/", authMiddleware, async (req, res) => {
 		}
 
 		res.status(200).json(chatsToBeSent);
+	} catch (error) {
+		console.error(error);
+		return res.status(500).send(`Server Error`);
+	}
+});
+
+router.get("/user/:userToFindId", authMiddleware, async (req, res) => {
+	try {
+		const user = await User.findById(req.params.userToFindId);
+
+		if (!user) {
+			return res.status(404).send("No user found");
+		}
+
+		res
+			.status(200)
+			.json({ name: user.name, profilePicUrl: user.profilePicUrl });
 	} catch (error) {
 		console.error(error);
 		return res.status(500).send(`Server Error`);
