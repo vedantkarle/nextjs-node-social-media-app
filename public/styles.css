@@ -796,6 +796,17 @@ main .container .right{
   max-width: 50%;
   min-width: 215px;
 }
+
+.msg-notification-modal{
+  margin: 14px;
+  width:400px;
+}
+
+.msg-notification-modal .chat__item__content{
+  min-width:180px;
+  margin:10px;
+}
+
 .chat__item__content .chat__meta {
   justify-content: space-between;
   display: flex;

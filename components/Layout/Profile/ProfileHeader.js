@@ -6,6 +6,7 @@ const ProfileHeader = ({
 	ownAccount,
 	loggedUserFollowStats,
 	setLoggedUserFollowStats,
+	setFollowersLength,
 }) => {
 	const [loading, setLoading] = useState(false);
 
@@ -63,15 +64,16 @@ const ProfileHeader = ({
 					<button
 						onClick={async () => {
 							setLoading(true);
-							isFollowing
-								? await unFollowUser(
-										profile?.user?._id,
-										setLoggedUserFollowStats,
-								  )
-								: await followUser(
-										profile?.user?._id,
-										setLoggedUserFollowStats,
-								  );
+							if (isFollowing) {
+								await unFollowUser(
+									profile?.user?._id,
+									setLoggedUserFollowStats,
+								);
+								setFollowersLength(prev => prev - 1);
+							} else {
+								await followUser(profile?.user?._id, setLoggedUserFollowStats);
+								setFollowersLength(prev => prev + 1);
+							}
 							setLoading(false);
 						}}
 						className={isFollowing ? "btn" : "btn btn-primary"}

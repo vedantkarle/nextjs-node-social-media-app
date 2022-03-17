@@ -14,6 +14,8 @@ const ChatBody = ({
 	socket,
 	messagesWith,
 	sendMsg,
+	divRef,
+	deleteMsg,
 }) => {
 	const router = useRouter();
 
@@ -26,6 +28,7 @@ const ChatBody = ({
 			/>
 			{router.query.message && (
 				<ChatContent
+					divRef={divRef}
 					messages={messages}
 					bannerData={bannerData}
 					user={user}
@@ -33,6 +36,7 @@ const ChatBody = ({
 					socket={socket}
 					messagesWith={messagesWith}
 					sendMsg={sendMsg}
+					deleteMsg={deleteMsg}
 				/>
 			)}
 		</div>

@@ -139,7 +139,7 @@ const newFollowerNotification = async (userId, userToNotifyId) => {
 
 const removeFollowerNotification = async (userId, userToNotifyId) => {
 	try {
-		await NotificationModel.findOneAndUpdate(
+		await Notification.findOneAndUpdate(
 			{ user: userToNotifyId },
 			{
 				$pull: {

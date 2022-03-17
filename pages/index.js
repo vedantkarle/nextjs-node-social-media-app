@@ -1,18 +1,45 @@
 import axios from "axios";
 import { parseCookies } from "nookies";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import Modal from "react-responsive-modal";
 import { toast } from "react-toastify";
+import io from "socket.io-client";
+import MessageNotificationModal from "../components/Layout/Chat/MessageNotificationModal";
 import CreatePostForm from "../components/Layout/Post/CreatePostForm";
 import Posts from "../components/Layout/Post/Posts";
 import SearchBar from "../components/Layout/SearchBar";
 import Sidebar from "../components/Layout/Sidebar";
 import baseUrl from "../utils/baseUrl";
+import getUserInfo from "../utils/getUserInfo";
 
 const Index = ({ user, postsData, errorLoading }) => {
 	const [posts, setPosts] = useState(postsData);
 	const [showToastr, setShowToastr] = useState(false);
+	const [newMsgReceived, setNewMsgReceived] = useState(null);
+	const [showModal, setShowModal] = useState(false);
+
+	const socket = useRef();
 
 	useEffect(() => {
+		if (!socket.current) {
+			socket.current = io(baseUrl);
+		}
+
+		if (socket.current) {
+			socket.current.emit("join", { userId: user._id });
+			socket.current.on("newMsgReceived", async ({ newMsg }) => {
+				const { name, profilePicUrl } = await getUserInfo(newMsg.sender);
+				if (user.newMessagePopup) {
+					setNewMsgReceived({
+						...newMsg,
+						senderName: name,
+						senderProfilePicUrl: profilePicUrl,
+					});
+					setShowModal(true);
+				}
+			});
+		}
+
 		document.title = `Welcome, ${user.name.split(" ")[0]}`;
 	}, []);
 
@@ -22,6 +49,17 @@ const Index = ({ user, postsData, errorLoading }) => {
 			setShowToastr(false);
 		}
 	}, [showToastr]);
+
+	const sendMsg = msg => {
+		if (socket.current) {
+			socket.current.emit("sendMsg", {
+				userId: user._id,
+				msgSendToUserId: newMsgReceived.sender,
+				msg,
+			});
+		}
+		setShowModal(false);
+	};
 
 	return (
 		<main>
@@ -46,6 +84,20 @@ const Index = ({ user, postsData, errorLoading }) => {
 				</div>
 				<SearchBar />
 			</div>
+			<Modal
+				open={showModal}
+				onClose={() => {
+					setShowModal(false);
+				}}
+				center>
+				<MessageNotificationModal
+					socket={socket}
+					showModal={showModal}
+					newMsgReceived={newMsgReceived}
+					user={user}
+					sendMsg={sendMsg}
+				/>
+			</Modal>
 		</main>
 	);
 };

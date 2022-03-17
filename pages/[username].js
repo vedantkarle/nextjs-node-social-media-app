@@ -25,6 +25,8 @@ const ProfilePage = ({
 	const [loading, setLoading] = useState(false);
 	const [loggedUserFollowStats, setLoggedUserFollowStats] =
 		useState(userFollowStats);
+	const [followersLen, setFollowersLen] = useState(followersLength);
+	const [followingLen, setFollowingLen] = useState(followingLength);
 	const [activeItem, setActiveItem] = useState("profile");
 
 	const handleItemClick = item => setActiveItem(item);
@@ -62,8 +64,8 @@ const ProfilePage = ({
 			<ProfileTabs
 				activeItem={activeItem}
 				handleItemClick={handleItemClick}
-				followersLength={followersLength}
-				followingLength={followingLength}
+				followersLength={followersLen}
+				followingLength={followingLen}
 				ownAccount={ownAccount}
 				loggedUserFollowStats={loggedUserFollowStats}
 			/>
@@ -75,6 +77,8 @@ const ProfilePage = ({
 							ownAccount={ownAccount}
 							loggedUserFollowStats={loggedUserFollowStats}
 							setLoggedUserFollowStats={setLoggedUserFollowStats}
+							setFollowersLength={setFollowersLen}
+							setFollowingLength={setFollowingLen}
 						/>
 						{loading ? (
 							<ClipLoader />
@@ -101,6 +105,8 @@ const ProfilePage = ({
 						setLoggedUserFollowStats={setLoggedUserFollowStats}
 						profileUserId={profile?.user?._id}
 						ownAccount={ownAccount}
+						setFollowersLength={setFollowersLen}
+						setFollowingLength={setFollowingLen}
 					/>
 				)}
 				{activeItem === "following" && (
@@ -110,6 +116,8 @@ const ProfilePage = ({
 						setLoggedUserFollowStats={setLoggedUserFollowStats}
 						profileUserId={profile?.user?._id}
 						ownAccount={ownAccount}
+						setFollowersLength={setFollowersLen}
+						setFollowingLength={setFollowingLen}
 					/>
 				)}
 				{activeItem === "updateProfile" && <UpdateProfile profile={profile} />}

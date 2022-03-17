@@ -17,7 +17,9 @@ const ChatListItems = ({ animationDelay, chat, connectedUsers }) => {
 				})
 			}
 			style={{ animationDelay: `0.${animationDelay}s` }}
-			className={`chatlist__item active`}>
+			className={`chatlist__item ${
+				router.query.message === chat.messagesWith ? "active" : ""
+			}`}>
 			<Avatar
 				image={chat?.profilePicUrl || "http://placehold.it/80x80"}
 				isOnline={isOnline}

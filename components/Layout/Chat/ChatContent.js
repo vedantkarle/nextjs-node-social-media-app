@@ -9,9 +9,10 @@ const ChatContent = ({
 	bannerData,
 	user,
 	loading,
-	socket,
 	messagesWith,
 	sendMsg,
+	divRef,
+	deleteMsg,
 }) => {
 	return (
 		<div className='main__chatcontent'>
@@ -40,12 +41,14 @@ const ChatContent = ({
 						messages?.map((m, index) => {
 							return (
 								<ChatItem
+									divRef={divRef}
 									animationDelay={index + 2}
 									key={index}
 									user={user}
 									msg={m}
 									image={bannerData.profilePicUrl}
 									messagesWith={messagesWith}
+									deleteMsg={deleteMsg}
 								/>
 							);
 						})
