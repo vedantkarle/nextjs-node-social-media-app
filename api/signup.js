@@ -8,8 +8,7 @@ const Chat = require("../models/ChatModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const isEmail = require("validator/lib/isEmail");
-const userPng =
-	"https://res.cloudinary.com/indersingh/image/upload/v1593464618/App/user_mklcpl.png";
+
 const regexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
 
 router.get("/:username", async (req, res) => {
@@ -63,7 +62,7 @@ router.post("/", async (req, res) => {
 			email: email.toLowerCase(),
 			username: username.toLowerCase(),
 			password: hashedPassword,
-			profilePicUrl: req.body.profilePicUrl || userPng,
+			profilePicUrl: req.body.profilePicUrl || "",
 		});
 
 		let profileFields = {};
