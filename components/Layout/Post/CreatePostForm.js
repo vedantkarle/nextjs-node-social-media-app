@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
+import Modal from "react-responsive-modal";
 import { toast } from "react-toastify";
 import { addPost } from "../../../utils/postActions";
 import upload from "../../../utils/uploadPicToCloudinary";
+import CropImageModal from "./CropImageModal";
 
 const CreatePostForm = ({ user, setPosts, setShowToastr }) => {
 	const [newPost, setNewPost] = useState({ text: "", location: "" });
@@ -12,6 +14,8 @@ const CreatePostForm = ({ user, setPosts, setShowToastr }) => {
 
 	const [media, setMedia] = useState(null);
 	const [mediaPreview, setMediaPreview] = useState(null);
+
+	const [showModal, setShowModal] = useState(false);
 
 	const handleChange = e => {
 		const { name, value, files } = e.target;
@@ -105,13 +109,25 @@ const CreatePostForm = ({ user, setPosts, setShowToastr }) => {
 					</div>
 				) : (
 					<div className='post-image'>
-						<i
-							className='uil uil-times-circle'
+						<img src={mediaPreview} alt='post-image' />
+
+						<div
 							onClick={() => {
 								!loading && setMedia(null);
 								!loading && setMediaPreview(null);
-							}}></i>
-						<img src={mediaPreview} alt='post-image' />
+							}}
+							className='btn btn-primary'
+							style={{ marginTop: "15px", width: "100%", textAlign: "center" }}>
+							<i className='uil uil-trash-alt' style={{ color: "white" }}></i>
+							<span>Remove Image</span>
+						</div>
+						<div
+							onClick={() => setShowModal(true)}
+							className='btn btn-primary'
+							style={{ marginTop: "15px", width: "100%", textAlign: "center" }}>
+							<i className='uil uil-crop-alt' style={{ color: "white" }}></i>
+							<span>Crop Image</span>
+						</div>
 					</div>
 				)}
 				<input
@@ -122,6 +138,19 @@ const CreatePostForm = ({ user, setPosts, setShowToastr }) => {
 					disabled={newPost.text === "" || loading}
 				/>
 			</form>
+			<Modal
+				open={showModal}
+				onClose={() => {
+					setShowModal(false);
+				}}
+				center>
+				<CropImageModal
+					mediaPreview={mediaPreview}
+					setMediaPreview={setMediaPreview}
+					setMedia={setMedia}
+					setShowModal={setShowModal}
+				/>
+			</Modal>
 		</div>
 	);
 };

@@ -86,6 +86,11 @@ h1,h2,h3,h4,h5,p{
   opacity: 0.8;
 }
 
+.btn.circular{
+  border-radius:50px;
+  margin-right: 10px;
+}
+
 .btn-primary{
   background:var(--color-primary);
   color:white;
@@ -311,13 +316,10 @@ main .container{
   margin-right: 1rem;
 }
 
-.post-image{
-  position: relative;
-}
-
-.post-image i{
-  position: absolute;
-  cursor: pointer;
+.post-image img{
+  border-radius:10px;
+  overflow: hidden;
+  margin-top:10px;
 }
 
 /* FEEDS */
@@ -1119,4 +1121,17 @@ main .container .right{
 }
 .profile__card.open .card__header i:before {
   content: "\f106";
+}
+
+.image-cropper-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap:10px;
+}
+
+.cropper-actions{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding:10px;
 }

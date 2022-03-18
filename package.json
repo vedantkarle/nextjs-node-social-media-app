@@ -31,6 +31,7 @@
 		"react": "16.13.1",
 		"react-accessible-accordion": "^4.0.0",
 		"react-confirm-alert": "^2.8.0",
+		"react-cropper": "^2.1.8",
 		"react-dom": "16.13.1",
 		"react-icons": "^4.3.1",
 		"react-infinite-scroll-component": "6.0.0",

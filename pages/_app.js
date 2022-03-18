@@ -1,4 +1,5 @@
 import axios from "axios";
+import "cropperjs/dist/cropper.css";
 import { destroyCookie, parseCookies } from "nookies";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import "react-responsive-modal/styles.css";
