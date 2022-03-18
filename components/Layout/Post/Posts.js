@@ -5,7 +5,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import baseUrl from "../../../utils/baseUrl";
 import Feed from "./Feed";
 
-const Posts = ({ posts, user, setPosts, setShowToastr }) => {
+const Posts = ({ posts, user, setPosts, setShowToastr, socket }) => {
 	const [hasMore, setHasMore] = useState(true);
 	const [pageNumber, setPageNumber] = useState(2);
 
@@ -35,6 +35,7 @@ const Posts = ({ posts, user, setPosts, setShowToastr }) => {
 				dataLength={posts?.length}>
 				{posts.map(post => (
 					<Feed
+						socket={socket}
 						key={post._id}
 						post={post}
 						setPosts={setPosts}

@@ -15,7 +15,7 @@ import ImageModal from "./ImageModal";
 import LikeList from "./LikeList";
 import NoImageModal from "./NoImageModal";
 
-const Feed = ({ post, setPosts, user, setShowToastr }) => {
+const Feed = ({ post, setPosts, user, setShowToastr, socket }) => {
 	const [likes, setLikes] = useState(post.likes);
 	const [comments, setComments] = useState(post.comments);
 	const [error, setError] = useState(null);
@@ -87,9 +87,23 @@ const Feed = ({ post, setPosts, user, setShowToastr }) => {
 								color: "crimson",
 								fontSize: "1.2rem",
 							}}
-							onClick={() =>
-								likePost(post._id, user._id, setLikes, false, setError)
-							}
+							onClick={() => {
+								if (socket.current) {
+									socket.current.emit("likePost", {
+										postId: post._id,
+										userId: user._id,
+										like: false,
+									});
+
+									socket.current.on("postLiked", () => {
+										setLikes(prev =>
+											prev.filter(like => like.user !== user._id),
+										);
+									});
+								} else {
+									likePost(post._id, user._id, setLikes, false, setError);
+								}
+							}}
 						/>
 						<span
 							style={{ fontSize: "12px", marginLeft: "10px" }}
@@ -106,9 +120,21 @@ const Feed = ({ post, setPosts, user, setShowToastr }) => {
 							style={{
 								fontSize: "1.2rem",
 							}}
-							onClick={() =>
-								likePost(post._id, user._id, setLikes, true, setError)
-							}
+							onClick={() => {
+								if (socket.current) {
+									socket.current.emit("likePost", {
+										postId: post._id,
+										userId: user._id,
+										like: true,
+									});
+
+									socket.current.on("postLiked", () => {
+										setLikes(prev => [...prev, { user: user._id }]);
+									});
+								} else {
+									likePost(post._id, user._id, setLikes, true, setError);
+								}
+							}}
 						/>
 						<span
 							style={{ fontSize: "12px", marginLeft: "10px" }}

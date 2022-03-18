@@ -19,7 +19,10 @@ const {
 	setMsgToUnread,
 	deleteMsg,
 } = require("./utilsServer/messageActions");
+const { likeOrUnlike } = require("./utilsServer/likeUnlikePost");
+
 const PORT = process.env.PORT || 3000;
+
 app.use(express.json());
 connectDb();
 
@@ -32,6 +35,27 @@ io.on("connection", socket => {
 				users: users.filter(user => user.userId !== userId),
 			});
 		}, 10000);
+	});
+
+	socket.on("likePost", async ({ postId, userId, like }) => {
+		const { success, error, name, profilePicUrl, username, postByUserId } =
+			await likeOrUnlike(postId, userId, like);
+		if (success) {
+			socket.emit("postLiked");
+
+			if (postByUserId !== userId) {
+				const receiverSocket = findConnectedUser(postByUserId);
+
+				if (receiverSocket && like) {
+					io.to(receiverSocket.socketId).emit("newNotificationReceived", {
+						name,
+						profilePicUrl,
+						username,
+						postId,
+					});
+				}
+			}
+		}
 	});
 
 	socket.on("loadMessages", async ({ userId, messagesWith }) => {

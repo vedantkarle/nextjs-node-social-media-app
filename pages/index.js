@@ -5,6 +5,7 @@ import Modal from "react-responsive-modal";
 import { toast } from "react-toastify";
 import io from "socket.io-client";
 import MessageNotificationModal from "../components/Layout/Chat/MessageNotificationModal";
+import NotificationPopup from "../components/Layout/Notifications/NotificationPopup";
 import CreatePostForm from "../components/Layout/Post/CreatePostForm";
 import Posts from "../components/Layout/Post/Posts";
 import SearchBar from "../components/Layout/SearchBar";
@@ -17,6 +18,8 @@ const Index = ({ user, postsData, errorLoading }) => {
 	const [showToastr, setShowToastr] = useState(false);
 	const [newMsgReceived, setNewMsgReceived] = useState(null);
 	const [showModal, setShowModal] = useState(false);
+	const [newNotification, setNewNotification] = useState(null);
+	const [notificationPopup, setNotificationPopup] = useState(false);
 
 	const socket = useRef();
 
@@ -50,6 +53,39 @@ const Index = ({ user, postsData, errorLoading }) => {
 		}
 	}, [showToastr]);
 
+	// toast.info('🦄 Wow so easy!', {
+	// 	position: "top-right",
+	// 	autoClose: 5000,
+	// 	hideProgressBar: false,
+	// 	closeOnClick: true,
+	// 	pauseOnHover: true,
+	// 	draggable: true,
+	// 	progress: undefined,
+	// 	});
+
+	useEffect(() => {
+		if (socket.current) {
+			socket.current.on(
+				"newNotificationReceived",
+				({ name, profilePicUrl, username, postId }) => {
+					setNewNotification({
+						name,
+						profilePicUrl,
+						username,
+						postId,
+					});
+					setNotificationPopup(true);
+				},
+			);
+		}
+	}, []);
+
+	useEffect(() => {
+		if (newNotification && notificationPopup) {
+			toast(<NotificationPopup newNotification={newNotification} />);
+		}
+	}, [newNotification, notificationPopup]);
+
 	const sendMsg = msg => {
 		if (socket.current) {
 			socket.current.emit("sendMsg", {
@@ -75,6 +111,7 @@ const Index = ({ user, postsData, errorLoading }) => {
 						<div>No Posts</div>
 					) : (
 						<Posts
+							socket={socket}
 							user={user}
 							posts={posts}
 							setPosts={setPosts}
