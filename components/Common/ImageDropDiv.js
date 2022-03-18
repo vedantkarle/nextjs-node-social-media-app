@@ -41,10 +41,11 @@ const ImageDropDiv = ({
 					{mediaPreview === null ? (
 						<>
 							<div
+								style={{ textAlign: "center" }}
 								className={
 									highlighted ? "image-drop highlighted" : "image-drop"
 								}>
-								<h5>Drag n Drop or Click to upload image</h5>
+								<h5>Drag n Drop image</h5>
 							</div>
 						</>
 					) : (

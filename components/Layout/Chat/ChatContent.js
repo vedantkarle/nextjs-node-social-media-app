@@ -13,13 +13,18 @@ const ChatContent = ({
 	sendMsg,
 	divRef,
 	deleteMsg,
+	connectedUsers,
 }) => {
+	const isOnline =
+		connectedUsers?.length > 0 &&
+		connectedUsers.filter(user => user.userId === messagesWith).length > 0;
+
 	return (
 		<div className='main__chatcontent'>
 			<div className='content__header'>
 				<div className='blocks'>
 					<div className='current-chatting-user'>
-						<Avatar isOnline='active' image={bannerData?.profilePicUrl} />
+						<Avatar isOnline={isOnline} image={bannerData?.profilePicUrl} />
 						<p>{bannerData?.name}</p>
 					</div>
 				</div>
@@ -49,6 +54,7 @@ const ChatContent = ({
 									image={bannerData.profilePicUrl}
 									messagesWith={messagesWith}
 									deleteMsg={deleteMsg}
+									isOnline={isOnline}
 								/>
 							);
 						})

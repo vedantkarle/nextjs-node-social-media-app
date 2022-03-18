@@ -1,7 +1,7 @@
 import cookie from "js-cookie";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { Message } from "semantic-ui-react";
+import { toast } from "react-toastify";
 import { loginUser } from "../utils/authUser";
 
 function Login() {
@@ -41,19 +41,14 @@ function Login() {
 		if (userEmail) setUser(prev => ({ ...prev, email: userEmail }));
 	}, []);
 
+	useEffect(() => {
+		errorMsg !== null && toast.error(errorMsg);
+	}, [errorMsg]);
+
 	return (
 		<div className='signup-form'>
 			<h2>Login</h2>
 			<form onSubmit={handleSubmit}>
-				{errorMsg !== null && (
-					<Message
-						error
-						header='Oops!'
-						content={errorMsg}
-						onDismiss={() => setErrorMsg(null)}
-					/>
-				)}
-
 				<div className='form-inputs'>
 					<input
 						required
@@ -78,7 +73,7 @@ function Login() {
 					<button
 						className='btn btn-primary'
 						type='submit'
-						disabled={submitDisabled}>
+						disabled={submitDisabled || formLoading}>
 						Login
 					</button>
 				</div>

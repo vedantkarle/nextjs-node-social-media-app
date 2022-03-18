@@ -2,7 +2,6 @@ import axios from "axios";
 import cookie from "js-cookie";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import { Search } from "semantic-ui-react";
 import baseUrl from "../../utils/baseUrl";
 
@@ -45,15 +44,7 @@ const SearchBar = () => {
 
 			setResults(mappedResults);
 		} catch (error) {
-			toast.error("Error in searching", {
-				position: "top-right",
-				autoClose: 2000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-			});
+			console.log(error);
 		}
 
 		setLoading(false);
@@ -97,7 +88,7 @@ const SearchBar = () => {
 
 const ResultRenderer = ({ title, image }) => {
 	return (
-		<div className='search-list'>
+		<div className='search-list' style={{ cursor: "pointer" }}>
 			<img src={image} />
 			<h5>{title}</h5>
 		</div>

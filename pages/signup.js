@@ -1,7 +1,7 @@
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { Message } from "semantic-ui-react";
+import { toast } from "react-toastify";
 import CommonInputs from "../components/Common/CommonInputs";
 import ImageDropDiv from "../components/Common/ImageDropDiv";
 import { registerUser } from "../utils/authUser";
@@ -28,7 +28,6 @@ const Signup = () => {
 	const { name, email, password, bio } = user;
 
 	const [showSocialLinks, setShowSocialLinks] = useState(false);
-	const [showPassword, setShowPassword] = useState(false);
 	const [error, setError] = useState(null);
 	const [formLoading, setFormLoading] = useState(false);
 	const [submitDisabled, setSubmitDisabled] = useState(false);
@@ -102,17 +101,13 @@ const Signup = () => {
 		username === "" ? setUsernameAvailable(false) : checkUsername();
 	}, [username]);
 
+	useEffect(() => {
+		error !== null && toast.error(error);
+	}, [error]);
+
 	return (
 		<div className='signup-form'>
 			<form onSubmit={handleSubmit}>
-				{error && (
-					<Message
-						error
-						header='Oops!'
-						content={error}
-						onDismiss={() => setError(null)}
-					/>
-				)}
 				<div className='form-inputs'>
 					<ImageDropDiv
 						mediaPreview={mediaPreview}
@@ -175,7 +170,7 @@ const Signup = () => {
 					<button
 						className='btn btn-primary'
 						type='submit'
-						disabled={submitDisabled || !usernameAvailable}>
+						disabled={submitDisabled || !usernameAvailable || formLoading}>
 						Signup
 					</button>
 				</div>

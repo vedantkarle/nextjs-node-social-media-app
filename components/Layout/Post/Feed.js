@@ -88,7 +88,7 @@ const Feed = ({ post, setPosts, user, setShowToastr, socket }) => {
 								fontSize: "1.2rem",
 							}}
 							onClick={() => {
-								if (socket.current) {
+								if (socket?.current) {
 									socket.current.emit("likePost", {
 										postId: post._id,
 										userId: user._id,
@@ -121,7 +121,7 @@ const Feed = ({ post, setPosts, user, setShowToastr, socket }) => {
 								fontSize: "1.2rem",
 							}}
 							onClick={() => {
-								if (socket.current) {
+								if (socket?.current) {
 									socket.current.emit("likePost", {
 										postId: post._id,
 										userId: user._id,

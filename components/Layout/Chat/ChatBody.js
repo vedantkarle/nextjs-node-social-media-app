@@ -37,6 +37,7 @@ const ChatBody = ({
 					messagesWith={messagesWith}
 					sendMsg={sendMsg}
 					deleteMsg={deleteMsg}
+					connectedUsers={connectedUsers}
 				/>
 			)}
 		</div>

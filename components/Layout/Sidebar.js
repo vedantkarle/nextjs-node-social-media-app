@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 
-const Sidebar = ({ user, active }) => {
+const Sidebar = ({ user, active, notifications }) => {
 	const router = useRouter();
 
 	return (
@@ -34,9 +34,7 @@ const Sidebar = ({ user, active }) => {
 							active === "messages" ? "menu-item active" : "menu-item"
 						}>
 						<span>
-							<i className='uil uil-envelopes'>
-								<small className='notification-count'>9+</small>
-							</i>
+							<i className='uil uil-envelopes'></i>
 						</span>
 						<h3>Messages</h3>
 					</a>
@@ -48,7 +46,9 @@ const Sidebar = ({ user, active }) => {
 						}>
 						<span>
 							<i className='uil uil-bell'>
-								<small className='notification-count'>9+</small>
+								{user.unreadNotification && (
+									<small className='notification-count'></small>
+								)}
 							</i>
 						</span>
 						<h3>Notifications</h3>

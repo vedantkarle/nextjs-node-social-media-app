@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 
@@ -7,7 +8,10 @@ function Navbar({ user }) {
 	return (
 		<nav>
 			<div className='container'>
-				<h2 className='logo' onClick={() => router.push("/")}>
+				<h2
+					className='logo'
+					onClick={() => router.push("/")}
+					style={{ cursor: "pointer" }}>
 					Social Book
 				</h2>
 				<div className='search-bar'>
@@ -15,12 +19,20 @@ function Navbar({ user }) {
 					<input type='search' placeholder='Search...' />
 				</div>
 				<div className='create'>
-					<label className='btn btn-primary' htmlFor='create-post'>
-						Create
-					</label>
-					<div className='profile-photo'>
-						<img src={user?.profilePicUrl} alt='user-photo' />
-					</div>
+					{user ? (
+						<div className='profile-photo'>
+							<img src={user?.profilePicUrl} alt='user-photo' />
+						</div>
+					) : (
+						<>
+							<Link href='/login'>
+								<label className='btn '>Login</label>
+							</Link>
+							<Link href='/signup'>
+								<label className='btn btn-primary'>Signup</label>
+							</Link>
+						</>
+					)}
 				</div>
 			</div>
 		</nav>

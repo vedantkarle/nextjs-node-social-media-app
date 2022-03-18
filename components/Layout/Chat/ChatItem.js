@@ -2,7 +2,7 @@ import moment from "moment";
 import React from "react";
 import Avatar from "./Avatar";
 
-const ChatItem = ({ user, image, msg, divRef, deleteMsg }) => {
+const ChatItem = ({ user, image, msg, divRef, deleteMsg, isOnline }) => {
 	return (
 		<div
 			style={{ animationDelay: `0.8s` }}
@@ -19,7 +19,7 @@ const ChatItem = ({ user, image, msg, divRef, deleteMsg }) => {
 					<span>{moment(msg.date).fromNow()}</span>
 				</div>
 			</div>
-			<Avatar image={image} />
+			<Avatar isOnline={isOnline} image={image} />
 		</div>
 	);
 };

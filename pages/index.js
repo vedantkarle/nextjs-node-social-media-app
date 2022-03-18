@@ -13,7 +13,7 @@ import Sidebar from "../components/Layout/Sidebar";
 import baseUrl from "../utils/baseUrl";
 import getUserInfo from "../utils/getUserInfo";
 
-const Index = ({ user, postsData, errorLoading }) => {
+const Index = ({ user, postsData, errorLoading, notifications }) => {
 	const [posts, setPosts] = useState(postsData);
 	const [showToastr, setShowToastr] = useState(false);
 	const [newMsgReceived, setNewMsgReceived] = useState(null);
@@ -53,16 +53,6 @@ const Index = ({ user, postsData, errorLoading }) => {
 		}
 	}, [showToastr]);
 
-	// toast.info('🦄 Wow so easy!', {
-	// 	position: "top-right",
-	// 	autoClose: 5000,
-	// 	hideProgressBar: false,
-	// 	closeOnClick: true,
-	// 	pauseOnHover: true,
-	// 	draggable: true,
-	// 	progress: undefined,
-	// 	});
-
 	useEffect(() => {
 		if (socket.current) {
 			socket.current.on(
@@ -100,7 +90,7 @@ const Index = ({ user, postsData, errorLoading }) => {
 	return (
 		<main>
 			<div className='container'>
-				<Sidebar user={user} />
+				<Sidebar user={user} notifications={notifications?.length} />
 				<div className='middle'>
 					<CreatePostForm
 						user={user}
@@ -148,8 +138,13 @@ Index.getInitialProps = async ctx => {
 			params: { pageNumber: 1 },
 		});
 
+		const { data } = await axios.get(`${baseUrl}/api/notifications`, {
+			headers: { Authorization: token },
+		});
+
 		return {
 			postsData: res.data,
+			notifications: data,
 		};
 	} catch (error) {
 		return { errorLoading: true };
